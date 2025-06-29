@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  mongo-books:
+    image: mongo
+    container_name: mongo-books
+    restart: always
+    ports:
+      - '27018:27017' # lokalny port 27018, w kontenerze nadal 27017
+    volumes:
+      - mongo-books-data:/data/db
+
+volumes:
+  mongo-books-data:
