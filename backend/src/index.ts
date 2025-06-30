@@ -1,11 +1,15 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import { MongoClient } from 'mongodb';
 import { AuthController } from './controllers/AuthController';
+import { validateRegister } from './validators/registerSchema';
 
 const run = async () => {
   const app = express();
   app.use(bodyParser.json());
+  app.use(cors());
+
 
   console.log('[Mongo] Connecting to MongoDB...');
   const mongoClient = await new MongoClient(process.env.MONGO_URL!).connect();
@@ -15,7 +19,7 @@ const run = async () => {
 
   const authController = new AuthController(database.collection('users'));
 
-  app.post('/register', (req, res) => authController.register(req, res));
+  app.post('/register',(req, res) => authController.register(req, res));
   app.post('/login', (req, res) => authController.login(req, res));
 
   app.listen(process.env.PORT, () => {

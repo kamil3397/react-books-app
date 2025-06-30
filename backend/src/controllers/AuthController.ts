@@ -14,7 +14,7 @@ interface UserType {
 }
 
 export class AuthController {
-  constructor(private usersCollection: Collection<UserType>) {}
+  constructor(private usersCollection: Collection<UserType>) { }
 
   async register(req: Request, res: Response) {
     try {
@@ -63,7 +63,14 @@ export class AuthController {
       }
 
       const token = jwt.sign(
-        { userId: user._id },
+        {
+          userId: user._id,
+          user: {
+            name: user.name,
+            email: user.email,
+            preferredLanguage: user.preferredLanguage,
+          },
+        },
         process.env.JWT_SECRET!,
         { expiresIn: '1h' }
       );

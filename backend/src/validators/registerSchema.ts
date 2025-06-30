@@ -3,9 +3,9 @@ import * as yup from 'yup';
 
 const schema = yup.object().shape({
   name: yup.string().min(2).max(50).required(),
-  lastName: yup.string().min(2).max(50).required(),
   email: yup.string().email().required(),
   password: yup.string().min(8).required(),
+  preferredLanguage: yup.string().required(),
 });
 
 export const validateRegister = async (req: Request, res: Response, next: NextFunction) => {
