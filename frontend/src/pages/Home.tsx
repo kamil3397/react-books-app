@@ -13,7 +13,7 @@ export const Home = () => {
         background: 'linear-gradient(to right, #f5f7fa, #c3cfe2)',
       }}
     >
-      <Container maxWidth="md" sx={{ textAlign: 'center', py: 10 }}>
+      <Container maxWidth="md" sx={{ textAlign: 'center', py: 10, }}>
         <Typography variant="h2" fontWeight="bold" gutterBottom>
           Discover Timeless Books
         </Typography>

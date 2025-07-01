@@ -65,11 +65,9 @@ export class AuthController {
       const token = jwt.sign(
         {
           userId: user._id,
-          user: {
             name: user.name,
             email: user.email,
             preferredLanguage: user.preferredLanguage,
-          },
         },
         process.env.JWT_SECRET!,
         { expiresIn: '1h' }
@@ -78,12 +76,10 @@ export class AuthController {
       return res.status(200).json({
         accessToken: token,
         userId: user._id,
-        user: {
           name: user.name,
           email: user.email,
           preferredLanguage: user.preferredLanguage,
           favorites: user.favorites,
-        },
       });
     } catch (err) {
       return res.status(500).json({ message: 'Internal Server Error' });

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Container, Grid, TextField, Typography } from '@mui/material';
+import { Container, Grid, Skeleton, TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
@@ -13,48 +13,45 @@ interface Book {
   formats: { [key: string]: string };
 }
 
-interface DecodedToken {
-  userId: string;
-  user: {
-    name: string;
-    email: string;
-    preferredLanguage: string;
-  };
-  iat: number;
-  exp: number;
-}
+type UserLanguage = {preferredLanguage?: string}
+
 
 export const BooksPage = () => {
   const navigate = useNavigate();
   const [books, setBooks] = useState<Book[]>([]);
   const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const { favoriteIds, toggleFavorite } = useFavorites();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/login');
-      return;
-    }
+  const token = localStorage.getItem('token');
+  if (!token) {
+    navigate('/login');
+    return;
+  }
 
-    try {
-      const decoded = jwtDecode<DecodedToken>(token);
-      const preferredLang = decoded.user?.preferredLanguage || 'en';
+  try {
+    const decoded = jwtDecode<UserLanguage>(token);
+    const preferredLang = decoded.preferredLanguage || 'en';
 
-      axios
-        .get('https://gutendex.com/books', {
-          params: {
-            search,
-            languages: preferredLang,
-          },
-        })
-        .then((res) => setBooks(res.data.results))
-        .catch(() => setBooks([]));
-    } catch {
-      navigate('/login');
-    }
-  }, [search, navigate]);
+    setLoading(true);
+
+    axios
+      .get('https://gutendex.com/books', {
+        params: {
+          search,
+          languages: preferredLang,
+        },
+      })
+      .then((res) => setBooks(res.data.results))
+      .catch(() => setBooks([]))
+      .finally(() => setLoading(false));
+  } catch {
+    navigate('/login');
+  }
+}, [search, navigate]);
+
 
   return (
     <Container sx={{ py: 4 }}>
@@ -71,17 +68,25 @@ export const BooksPage = () => {
       />
 
       <Grid container spacing={3}>
-        {books.map((book) => (
-          <Grid item key={book.id} xs={12} sm={6} md={4} lg={3}>
-            <BookCard
-              title={book.title}
-              authors={book.authors.map((a) => a.name).join(', ')}
-              cover={book.formats['image/jpeg']}
-              isFavorite={favoriteIds.includes(book.id.toString())}
-              onToggleFavorite={() => toggleFavorite(book.id.toString())}
-            />
-          </Grid>
-        ))}
+        {loading
+          ? Array.from({ length: 8 }).map((_, index) => (
+              <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+                <Skeleton variant="rectangular" height={300} />
+                <Skeleton />
+                <Skeleton width="60%" />
+              </Grid>
+            ))
+          : books.map((book) => (
+              <Grid item key={book.id} xs={12} sm={6} md={4} lg={3}>
+                <BookCard
+                  title={book.title}
+                  authors={book.authors.map((a) => a.name).join(', ')}
+                  cover={book.formats['image/jpeg']}
+                  isFavorite={favoriteIds.includes(book.id.toString())}
+                  onToggleFavorite={() => toggleFavorite(book.id.toString())}
+                />
+              </Grid>
+            ))}
       </Grid>
     </Container>
   );

@@ -3,16 +3,6 @@ import MenuBookIcon from '@mui/icons-material/MenuBook'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
-const linkStyle = {
-  color: 'inherit',
-  textDecoration: 'none',
-  marginRight: '1rem',
-  '&.active': {
-    fontWeight: 'bold',
-    borderBottom: '2px solid white',
-  },
-}
-
 export const Navbar = () => {
   const navigate = useNavigate()
   const { isLoggedIn, logout } = useAuth()
@@ -42,10 +32,34 @@ export const Navbar = () => {
         </Button>
 
         <Box>
-          <Button component={NavLink} to="/books" sx={linkStyle}>
+          <Button
+            component={NavLink}
+            to="/books"
+            sx={{
+              color: 'inherit',
+              textDecoration: 'none',
+              marginRight: '1rem',
+              '&.active': {
+                fontWeight: 'bold',
+                borderBottom: '2px solid white',
+              },
+            }}
+          >
             Books
           </Button>
-          <Button component={NavLink} to="/favorites" sx={linkStyle}>
+          <Button
+            component={NavLink}
+            to="/favorites"
+            sx={{
+              color: 'inherit',
+              textDecoration: 'none',
+              marginRight: '1rem',
+              '&.active': {
+                fontWeight: 'bold',
+                borderBottom: '2px solid white',
+              },
+            }}
+          >
             Favorites
           </Button>
           {isLoggedIn ? (
@@ -53,7 +67,19 @@ export const Navbar = () => {
               Logout
             </Button>
           ) : (
-            <Button component={NavLink} to="/login" sx={linkStyle}>
+            <Button
+              component={NavLink}
+              to="/login"
+              sx={{
+                color: 'inherit',
+                textDecoration: 'none',
+                marginRight: '1rem',
+                '&.active': {
+                  fontWeight: 'bold',
+                  borderBottom: '2px solid white',
+                },
+              }}
+            >
               Login
             </Button>
           )}
