@@ -14,6 +14,7 @@
 ![MongoDB](https://img.shields.io/badge/Database-MongoDB-brightgreen?logo=mongodb)
 ![JWT](https://img.shields.io/badge/Auth-JWT-orange?logo=jsonwebtokens)
 ![Docker](https://img.shields.io/badge/DevOps-Docker-blue?logo=docker)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 ---
 
@@ -89,25 +90,6 @@ DELETE /favorites/:bookId
 
 ---
 
-## 🗂 Folder Structure
-
-```
-react-books-app/
-├── backend/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── index.ts
-│   └── Dockerfile
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── hooks/
-│   │   └── App.tsx
-```
-
----
-
 ## ✅ Future Ideas
 
 - Add pagination
@@ -119,4 +101,5 @@ react-books-app/
 
 ## 📄 License
 
-MIT
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+
