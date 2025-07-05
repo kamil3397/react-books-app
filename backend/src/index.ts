@@ -4,6 +4,7 @@ import cors from 'cors';
 import { MongoClient } from 'mongodb';
 import { AuthController } from './controllers/AuthController';
 import { UsersController } from './controllers/UsersController';
+import { BooksController } from './controllers/BooksController';
 
 const run = async () => {
   const app = express();
@@ -23,6 +24,9 @@ const run = async () => {
 
   app.post('/register', (req, res) => authController.register(req, res));
   app.post('/login', (req, res) => authController.login(req, res));
+
+  app.get('/books', (req, res) => BooksController.getBooks(req, res));
+  app.post('/books/favoriteIds', BooksController.getBooksByIds);
 
   app.get('/favorites', (req, res) => usersController.getFavorites(req, res));
   app.post('/favorites/:bookId', (req, res) => usersController.addFavorite(req, res));
