@@ -4,42 +4,53 @@ import axios from 'axios'
 export const useFavorites = () => {
   const [favoriteIds, setFavoriteIds] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const token = localStorage.getItem('token')
 
   useEffect(() => {
-    if (!token) return
 
-    axios
-      .get<string[]>('http://localhost:4000/favorites', {
-        headers: { Authorization: token } 
-      })
-      .then((res) => {
-        setFavoriteIds(res.data)
-      })
-      .finally(() => setLoading(false))
-  }, [token])
+    const fetchFavorites = async () => {
+      await axios
+        .get<string[]>('http://localhost:4000/favorites', {
+          headers: { Authorization: token },
+        })
+        .then((res) => {
+          setFavoriteIds(res.data)
+          setError(null)
+        })
+        .catch(() => {
+          setFavoriteIds([])
+          setError('Failed to load favorite books')
+        })
+        .finally(() => setLoading(false))
+    }
+
+    fetchFavorites()
+  }, [])
 
   const toggleFavorite = async (bookId: string) => {
-    const exists = favoriteIds.includes(bookId)
-    const url = `http://localhost:4000/favorites/${bookId}`
 
-    try {
-      if (exists) {
-        await axios.delete(url, {
-          headers: { Authorization: token }
-        })
-        setFavoriteIds((prev) => prev.filter((id) => id !== bookId))
-      } else {
-        await axios.post(url, {}, {
-          headers: { Authorization: token } 
-        })
-        setFavoriteIds((prev) => [...prev, bookId])
-      }
-    } catch (e) {
-      console.error('Failed to update favorites', e)
-    }
-  }
+  const isAlreadyFavorite = favoriteIds.includes(bookId)
+  const config = { headers: { Authorization: token } }
 
-  return { favoriteIds, toggleFavorite, loading }
+  const updateServer = isAlreadyFavorite
+    ? () => axios.delete(`http://localhost:4000/favorites/${bookId}`, config)
+    : () => axios.post(`http://localhost:4000/favorites/${bookId}`, {}, config)
+
+  const updateLocalState = (prev: string[]) =>
+    isAlreadyFavorite
+      ? prev.filter((id) => id !== bookId)
+      : [...prev, bookId]
+
+  await updateServer()
+    .then(() => {
+      setFavoriteIds(updateLocalState)
+    })
+    .catch(() => {
+      setError('Failed to update favorite books')
+    })
+}
+
+  return { favoriteIds, toggleFavorite, loading, error }
 }
