@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Container, Grid, Typography } from '@mui/material'
 import { useFavorites } from '../hooks/useFavorites'
 import { BookCard } from './BooksPage/BooksPage components/BookCard'
+import { useTranslation } from 'react-i18next'
 
 interface Book {
   id: number
@@ -14,6 +15,7 @@ interface Book {
 export const FavoritesPage = () => {
   const { favoriteIds, toggleFavorite } = useFavorites()
   const [books, setBooks] = useState<Book[]>([])
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (favoriteIds.length === 0) {
@@ -31,11 +33,11 @@ export const FavoritesPage = () => {
   return (
     <Container sx={{ py: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Favorite Books
+        {t('favoritesPage.title')}
       </Typography>
 
       {books.length === 0 ? (
-        <Typography>No favorites yet.</Typography>
+        <Typography>{t('favoritesPage.empty')}</Typography>
       ) : (
         <Grid container spacing={3}>
           {books.map((book) => (

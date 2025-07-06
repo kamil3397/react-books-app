@@ -2,6 +2,7 @@ import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { Box, Button, Container, TextField, Typography, MenuItem, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 
 const languageOptions = [
   { label: 'English', value: 'en' },
@@ -16,17 +17,18 @@ const languageOptions = [
   { label: 'Suomi', value: 'fi' },
   { label: 'Ελληνικά', value: 'el' },
   { label: '中文', value: 'zh' },
-  { label: 'العربية', value: 'ar' },
+  { label: 'العربية', value: 'ar' }
 ];
 
 export const Register = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [form, setForm] = useState({
     name: '',
     email: '',
     password: '',
-    preferredLanguage: 'en',
+    preferredLanguage: 'en'
   });
 
   const [error, setError] = useState('');
@@ -44,12 +46,12 @@ export const Register = () => {
     axios
       .post('http://localhost:4000/register', form)
       .then(() => {
-        setSuccess('Account created successfully!');
+        setSuccess(t('registerPage.success'));
         setForm({ name: '', email: '', password: '', preferredLanguage: 'en' });
-        navigate('/login')
+        navigate('/login');
       })
       .catch((error) => {
-        const message = error.response?.data?.message || 'Registration failed';
+        const message = error.response?.data?.message || t('registerPage.failed');
         setError(message);
       });
   };
@@ -57,13 +59,13 @@ export const Register = () => {
   return (
     <Container maxWidth="sm" sx={{ py: 6 }}>
       <Typography variant="h4" gutterBottom>
-        Create an Account
+        {t('registerPage.title')}
       </Typography>
 
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 2 }}>
         <TextField
           fullWidth
-          label="Name"
+          label={t('registerPage.name')}
           name="name"
           margin="normal"
           value={form.name}
@@ -72,7 +74,7 @@ export const Register = () => {
         />
         <TextField
           fullWidth
-          label="Email"
+          label={t('registerPage.email')}
           name="email"
           type="email"
           margin="normal"
@@ -82,7 +84,7 @@ export const Register = () => {
         />
         <TextField
           fullWidth
-          label="Password"
+          label={t('registerPage.password')}
           name="password"
           type="password"
           margin="normal"
@@ -93,7 +95,7 @@ export const Register = () => {
         <TextField
           select
           fullWidth
-          label="Preferred Book Language"
+          label={t('registerPage.language')}
           name="preferredLanguage"
           margin="normal"
           value={form.preferredLanguage}
@@ -119,12 +121,12 @@ export const Register = () => {
         )}
 
         <Button type="submit" variant="contained" size="large" fullWidth sx={{ mt: 3 }}>
-          Register
+          {t('registerPage.submit')}
         </Button>
 
         <Typography variant="body2" mt={2}>
-          Already have an account?{' '}
-          <Button onClick={() => navigate('/login')}>Log in</Button>
+          {t('registerPage.alreadyAccount')}{' '}
+          <Button onClick={() => navigate('/login')}>{t('registerPage.loginLink')}</Button>
         </Typography>
       </Box>
     </Container>
