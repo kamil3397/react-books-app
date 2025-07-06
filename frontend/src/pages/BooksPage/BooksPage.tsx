@@ -5,6 +5,7 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { BookCard } from './BooksPage components/BookCard';
 import { useFavorites } from '../../hooks/useFavorites';
+import { useTranslation } from 'react-i18next';
 
 interface Book {
   id: number;
@@ -13,8 +14,7 @@ interface Book {
   formats: { [key: string]: string };
 }
 
-type UserLanguage = {preferredLanguage?: string}
-
+type UserLanguage = { preferredLanguage?: string };
 
 export const BooksPage = () => {
   const navigate = useNavigate();
@@ -23,44 +23,44 @@ export const BooksPage = () => {
   const [loading, setLoading] = useState(false);
 
   const { favoriteIds, toggleFavorite } = useFavorites();
+  const { t } = useTranslation();
 
   useEffect(() => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    navigate('/login');
-    return;
-  }
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+      return;
+    }
 
-  try {
-    const decoded = jwtDecode<UserLanguage>(token);
-    const preferredLang = decoded.preferredLanguage || 'en';
+    try {
+      const decoded = jwtDecode<UserLanguage>(token);
+      const preferredLang = decoded.preferredLanguage || 'en';
 
-    setLoading(true);
+      setLoading(true);
 
-    axios
-      .get('https://gutendex.com/books', {
-        params: {
-          search,
-          languages: preferredLang,
-        },
-      })
-      .then((res) => setBooks(res.data.results))
-      .catch(() => setBooks([]))
-      .finally(() => setLoading(false));
-  } catch {
-    navigate('/login');
-  }
-}, [search, navigate]);
-
+      axios
+        .get('https://gutendex.com/books', {
+          params: {
+            search,
+            languages: preferredLang,
+          },
+        })
+        .then((res) => setBooks(res.data.results))
+        .catch(() => setBooks([]))
+        .finally(() => setLoading(false));
+    } catch {
+      navigate('/login');
+    }
+  }, [search, navigate]);
 
   return (
     <Container sx={{ py: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Browse Books
+        {t('booksPage.title')}
       </Typography>
 
       <TextField
-        label="Search books"
+        label={t('booksPage.searchPlaceholder')}
         fullWidth
         margin="normal"
         value={search}

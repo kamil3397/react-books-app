@@ -1,0 +1,41 @@
+{
+  "navbar": {
+    "books": "Books",
+    "favorites": "Favorites",
+    "login": "Login",
+    "logout": "Logout",
+    "languageToggleLabel": "Change language to:"
+  },
+  "home": {
+    "title": "Discover Timeless Books",
+    "description": "Explore classics from the Gutendex Library. Sign up to save your favorites and rediscover forgotten gems.",
+    "cta": "Get Started"
+  },
+  "booksPage": {
+    "title": "Browse Books",
+    "searchPlaceholder": "Search books"
+  },
+  "favoritesPage": {
+    "title": "Favorite Books",
+    "empty": "No favorites yet."
+  },
+  "loginPage": {
+    "title": "Login",
+    "email": "Email",
+    "password": "Password",
+    "button": "Log In",
+    "loginFailed": "Login failed"
+  },
+  "registerPage": {
+    "title": "Create an Account",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "language": "Preferred Book Language",
+    "submit": "Register",
+    "alreadyAccount": "Already have an account?",
+    "loginLink": "Log in",
+    "success": "Account created successfully!",
+    "failed": "Registration failed"
+  }
+}
