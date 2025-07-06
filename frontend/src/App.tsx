@@ -5,9 +5,11 @@ import { Login } from './pages/Auth/Login';
 import { BooksPage } from './pages/BooksPage/BooksPage';
 import { Navbar } from './components/Navbar';
 import { FavoritesPage } from './pages/FavoritesPage';
+import { CssBaseline } from '@mui/material';
 
 const App = () => (
   <>
+  <CssBaseline />
   <Navbar/>
   <Routes>
     <Route path="/" element={<Home />} />
