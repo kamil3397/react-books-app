@@ -60,6 +60,7 @@ export const Register = () => {
 
   const onSubmit = async (data: FormData) => {
     setError('');
+
     try {
       await axios.post('http://localhost:4000/register', data);
       navigate('/login');
@@ -72,7 +73,7 @@ export const Register = () => {
 
   return (
     <Container maxWidth="sm" sx={{ py: 6 }}>
-      <Typography variant="h4">
+      <Typography variant="h4" gutterBottom>
         {t('registerPage.title')}
       </Typography>
 

@@ -17,18 +17,11 @@ export const Home = () => {
         background: 'linear-gradient(to right, #f5f7fa, #c3cfe2)',
       }}
     >
-      <Container
-        maxWidth="md"
-        sx={{
-          textAlign: 'center',
-          paddingTop: '80px',
-          paddingBottom: '80px',
-        }}
-      >
-        <Typography variant="h2" gutterBottom>
+      <Container maxWidth="md" sx={{ textAlign: 'center', py: 10 }}>
+        <Typography variant="h2" fontWeight="bold" gutterBottom>
           {t('home.title')}
         </Typography>
-        <Typography variant="h6" paragraph>
+        <Typography variant="h6" color="text.secondary" paragraph>
           {t('home.description')}
         </Typography>
         <Button

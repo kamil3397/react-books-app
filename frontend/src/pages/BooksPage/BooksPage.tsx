@@ -119,7 +119,7 @@ export const BooksPage = () => {
               pointerEvents: page === 1 ? 'none' : 'auto',
             }}
           >
-            Previous
+            {t('booksPage.previous')}
           </Button>
 
           <Typography color="text.primary">
@@ -134,7 +134,7 @@ export const BooksPage = () => {
               pointerEvents: page === totalPages ? 'none' : 'auto',
             }}
           >
-            Next
+            {t('booksPage.next')}
           </Button>
         </Box>
       )}

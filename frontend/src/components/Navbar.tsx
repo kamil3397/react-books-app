@@ -1,8 +1,8 @@
-  import { AppBar, Toolbar, Button, Box, Typography } from '@mui/material';
-  import MenuBookIcon from '@mui/icons-material/MenuBook';
-  import { NavLink, useNavigate } from 'react-router-dom';
-  import { useAuthContext } from '../context/AuthContext';
-  import { useTranslation } from 'react-i18next';
+import { AppBar, Toolbar, Button, Box, Typography } from '@mui/material';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -23,48 +23,48 @@ export const Navbar = () => {
     <AppBar position="static" color="primary" elevation={3}>
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', minWidth: 240 }}>
-  <Button
-    component={NavLink}
-    to="/"
-    color="inherit"
-    sx={{
-      display: 'flex',
-      alignItems: 'center',
-      textTransform: 'none',
-      fontSize: '1.25rem',
-      fontWeight: 500,
-      mr: 2,
-    }}
-  >
-    <MenuBookIcon fontSize="large" sx={{ mr: 1 }} />
-    Bookify
-  </Button>
+          <Button
+            component={NavLink}
+            to="/"
+            color="inherit"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              textTransform: 'none',
+              fontSize: '1.25rem',
+              fontWeight: 500,
+              mr: 2,
+            }}
+          >
+            <MenuBookIcon fontSize="large" sx={{ mr: 1 }} />
+            Bookify
+          </Button>
 
-  <Typography
-    variant="body2"
-    sx={{
-      color: 'white',
-      whiteSpace: 'nowrap',
-      fontSize: '0.875rem',
-      mr: 0.5,
-      minWidth: 90,
-    }}
-  >
-    {t('navbar.languageToggleLabel')}
-  </Typography>
-  <Button
-    onClick={toggleLanguage}
-    sx={{
-      color: 'inherit',
-      minWidth: 36,
-      px: 0.5,
-      fontSize: '0.875rem',
-      fontWeight: 500,
-    }}
-  >
-    {i18n.language === 'en' ? 'PL' : 'EN'}
-  </Button>
-</Box>
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'white',
+              whiteSpace: 'nowrap',
+              fontSize: '0.875rem',
+              mr: 0.5,
+              minWidth: 90,
+            }}
+          >
+            {t('navbar.languageToggleLabel')}
+          </Typography>
+          <Button
+            onClick={toggleLanguage}
+            sx={{
+              color: 'inherit',
+              minWidth: 36,
+              px: 0.5,
+              fontSize: '0.875rem',
+              fontWeight: 500,
+            }}
+          >
+            {i18n.language === 'en' ? 'PL' : 'EN'}
+          </Button>
+        </Box>
 
         <Box sx={{ ml: 'auto' }}>
           <Button component={NavLink} to="/books">Books</Button>
