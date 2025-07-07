@@ -5,6 +5,7 @@ import { Login } from './pages/Auth/Login';
 import { BooksPage } from './pages/BooksPage/BooksPage';
 import { Navbar } from './components/Navbar';
 import { FavoritesPage } from './pages/FavoritesPage';
+import { ProfilePage } from './pages/ProfilePage';
 
 const App = () => (
   <>
@@ -15,6 +16,7 @@ const App = () => (
     <Route path="/login" element={<Login />} />
     <Route path="/books" element={<BooksPage />} />
     <Route path="/favorites" element={<FavoritesPage />} />
+    <Route path="/profile" element={<ProfilePage />} />
   </Routes>
   </>
 );

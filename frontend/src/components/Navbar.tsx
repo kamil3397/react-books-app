@@ -62,6 +62,15 @@ export const Navbar = () => {
           >
             Favorites
           </Button>
+          <Button component={NavLink} to="/profile" sx={{
+            color: 'inherit',
+            textDecoration: 'none',
+            marginRight: '1rem',
+            '&.active': {
+              fontWeight: 'bold',
+              borderBottom: '2px solid white',
+            },
+          }}>Profile</Button>
           {isLoggedIn ? (
             <Button onClick={handleLogout} sx={{ color: 'white' }}>
               Logout
