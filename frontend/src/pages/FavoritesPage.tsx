@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, type FC } from 'react'
 import axios from 'axios'
 import { Container, Grid, Typography, Alert, CircularProgress } from '@mui/material'
 import { useFavorites } from '../hooks/useFavorites'
@@ -11,7 +11,7 @@ interface Book {
   formats: { [key: string]: string }
 }
 
-export const FavoritesPage: React.FC = () => {
+export const FavoritesPage: FC = () => {
   const { favoriteIds, toggleFavorite } = useFavorites()
   const [books, setBooks] = useState<Book[]>([])
   const [failedIds, setFailedIds] = useState<string[]>([])
