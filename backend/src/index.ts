@@ -25,7 +25,7 @@ const run = async () => {
   app.post('/register', (req, res) => authController.register(req, res));
   app.post('/login', (req, res) => authController.login(req, res));
 
-  app.get('/books', (req, res) => BooksController.getBooks(req, res));
+  app.get('/books', BooksController.getBooks);
   app.post('/books/favoriteIds', BooksController.getBooksByIds);
 
   app.get('/favorites', (req, res) => usersController.getFavorites(req, res));
