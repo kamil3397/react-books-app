@@ -17,20 +17,26 @@ export const FavoritesPage: FC = () => {
   const [failedIds, setFailedIds] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
 
-  useEffect(() => {
-    setLoading(true)
-    axios
-      .post<{ books: Book[], failed: string[] }>('http://localhost:4000/books/favoriteIds', { ids: favoriteIds })
-      .then(res => {
-        setBooks(res.data.books || [])
-        setFailedIds(res.data.failed || [])
-      })
-      .catch(() => {
-        setBooks([])
-        setFailedIds(favoriteIds)
-      })
-      .finally(() => setLoading(false))
-  }, [favoriteIds])
+ useEffect(() => {
+  const fetchBooks = async () => {
+    try {
+      setLoading(true)
+      const res = await axios.post<{ books: Book[], failed: string[] }>(
+        'http://localhost:4000/books/favoriteIds',
+        { ids: favoriteIds }
+      )
+      setBooks(res.data.books || [])
+      setFailedIds(res.data.failed || [])
+    } catch {
+      setBooks([])
+      setFailedIds(favoriteIds)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  fetchBooks()
+}, [favoriteIds])
 
 
   return (

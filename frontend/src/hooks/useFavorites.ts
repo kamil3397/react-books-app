@@ -17,7 +17,6 @@ export const useFavorites = () => {
         })
         .then((res) => {
           setFavoriteIds(res.data)
-          setError(null)
         })
         .catch(() => {
           setFavoriteIds([])
@@ -35,8 +34,8 @@ export const useFavorites = () => {
   const config = { headers: { Authorization: token } }
 
   const updateServer = isAlreadyFavorite
-    ? () => axios.delete(`http://localhost:4000/favorites/${bookId}`, config)
-    : () => axios.post(`http://localhost:4000/favorites/${bookId}`, {}, config)
+    ? async () => axios.delete(`http://localhost:4000/favorites/${bookId}`, config)
+    : async () => axios.post(`http://localhost:4000/favorites/${bookId}`, {}, config)
 
   const updateLocalState = (prev: string[]) =>
     isAlreadyFavorite
