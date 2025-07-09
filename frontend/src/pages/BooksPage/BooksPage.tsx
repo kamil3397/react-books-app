@@ -3,7 +3,7 @@ import { Container, Grid, Skeleton, TextField, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import { BookCard } from './BooksPage components/BookCard';
+import { BookCard } from './BooksPageComponents/BookCard';
 import { useFavorites } from '../../hooks/useFavorites';
 
 interface Book {
@@ -38,7 +38,7 @@ export const BooksPage = () => {
     setLoading(true);
 
     axios
-      .get('https://gutendex.com/books', {
+      .get('http://localhost:4000/books', {
         params: {
           search,
           languages: preferredLang,
