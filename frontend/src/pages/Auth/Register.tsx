@@ -56,19 +56,18 @@ export const Register = () => {
     },
   });
 
-  const onSubmit = (data: FormData) => {
-    setError('');
+  const onSubmit = async (data: FormData) => {
+  setError('');
 
-    axios
-      .post('http://localhost:4000/register', data)
-      .then(() => {
-        navigate('/login');
-      })
-      .catch((err: AxiosError<{ message?: string }>) => {
-        const message = err.response?.data?.message || 'Registration failed';
-        setError(message);
-      });
-  };
+  try {
+    await axios.post('http://localhost:4000/register', data);
+    navigate('/login');
+  } catch (err) {
+    const axiosError = err as AxiosError<{ message?: string }>;
+    const message = axiosError.response?.data?.message || 'Registration failed';
+    setError(message);
+  }
+};
 
   return (
     <Container maxWidth="sm" sx={{ py: 6 }}>
