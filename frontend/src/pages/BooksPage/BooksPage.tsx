@@ -28,32 +28,35 @@ export const BooksPage = () => {
   const { favoriteIds, toggleFavorite } = useFavorites();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/login');
-      return;
-    }
+  const token = localStorage.getItem('token');
+  if (!token) {
+    navigate('/login');
+    return;
+  }
 
+  const fetchBooks = async () => {
     try {
       const decoded = jwtDecode<UserLanguage>(token);
       const preferredLang = decoded.preferredLanguage || 'en';
 
       setLoading(true);
 
-      axios
-        .get('https://gutendex.com/books', {
-          params: { search, languages: preferredLang, page },
-        })
-        .then((res) => {
-          setBooks(res.data.results);
-          setTotalPages(Math.ceil(res.data.count / 32));
-        })
-        .catch(() => setBooks([]))
-        .finally(() => setLoading(false));
+      const res = await axios.get('https://gutendex.com/books', {
+        params: { search, languages: preferredLang, page },
+      });
+
+      setBooks(res.data.results);
+      setTotalPages(Math.ceil(res.data.count / 32));
     } catch {
       navigate('/login');
+    } finally {
+      setLoading(false);
     }
-  }, [search, page, navigate]);
+  };
+
+  fetchBooks();
+}, [search, page, navigate]);
+
 
   const handlePrev = () => setPage((p) => Math.max(p - 1, 1));
   const handleNext = () => setPage((p) => Math.min(p + 1, totalPages));
