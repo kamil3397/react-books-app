@@ -1,7 +1,10 @@
-import { useState, type ChangeEvent, type FormEvent } from 'react';
-import { Box, Button, Container, TextField, Typography, MenuItem, Alert } from '@mui/material';
+import { useState } from 'react';
+import { Button, Container, TextField, Typography, MenuItem, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import axios, { AxiosError } from 'axios';
 
 const languageOptions = [
   { label: 'English', value: 'en' },
@@ -19,78 +22,91 @@ const languageOptions = [
   { label: 'العربية', value: 'ar' },
 ];
 
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+
+const schema = yup.object().shape({
+  name: yup.string().min(2, 'Name must be at least 2 characters').max(50).required('Name is required'),
+  email: yup.string().email('Invalid email').required('Email is required'),
+  password: yup
+    .string()
+    .min(8, 'Password must be at least 8 characters')
+    .matches(passwordRegex, 'Your password must contain at least one uppercase letter and one number')
+    .required('Password is required'),
+  preferredLanguage: yup.string().required('Language is required'),
+});
+
+type FormData = {
+  name: string;
+  email: string;
+  password: string;
+  preferredLanguage: string;
+};
+
 export const Register = () => {
   const navigate = useNavigate();
+  const [error, setError] = useState('');
 
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    password: '',
-    preferredLanguage: 'en',
+  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+      preferredLanguage: 'en',
+    },
   });
 
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const onSubmit = async (data: FormData) => {
+  setError('');
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setSuccess('');
-
-    axios
-      .post('http://localhost:4000/register', form)
-      .then(() => {
-        setSuccess('Account created successfully!');
-        setForm({ name: '', email: '', password: '', preferredLanguage: 'en' });
-        navigate('/login');
-      })
-      .catch((error) => {
-        const message = error.response?.data?.message || 'Registration failed';
-        setError(message);
-      });
-  };
+  try {
+    await axios.post('http://localhost:4000/register', data);
+    navigate('/login');
+  } catch (err) {
+    const axiosError = err as AxiosError<{ message?: string }>;
+    const message = axiosError.response?.data?.message || 'Registration failed';
+    setError(message);
+  }
+};
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" sx={{ py: 6 }}>
       <Typography variant="h4">
         Create an Account
       </Typography>
 
-      <Box component="form" onSubmit={handleSubmit} noValidate mt="16px">
+      <form onSubmit={handleSubmit(onSubmit)} style={{ marginTop: 16 }}>
         <TextField
           label="Name"
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          required
+          margin="normal"
+          {...register('name')}
+          error={!!errors.name}
+          helperText={errors.name?.message}
         />
         <TextField
           label="Email"
-          name="email"
           type="email"
-          value={form.email}
-          onChange={handleChange}
-          required
+          margin="normal"
+          {...register('email')}
+          error={!!errors.email}
+          helperText={errors.email?.message}
         />
         <TextField
           label="Password"
-          name="password"
           type="password"
-          value={form.password}
-          onChange={handleChange}
-          required
+          margin="normal"
+          {...register('password')}
+          error={!!errors.password}
+          helperText={errors.password?.message}
+
         />
         <TextField
           select
           label="Preferred Book Language"
-          name="preferredLanguage"
-          value={form.preferredLanguage}
-          onChange={handleChange}
-          required
+          margin="normal"
+          {...register('preferredLanguage')}
+          error={!!errors.preferredLanguage}
+          helperText={errors.preferredLanguage?.message}
         >
           {languageOptions.map(({ label, value }) => (
             <MenuItem key={value} value={value}>
@@ -99,8 +115,12 @@ export const Register = () => {
           ))}
         </TextField>
 
-        {error && <Alert severity="error" sx={{ mt: '16px' }}>{error}</Alert>}
-        {success && <Alert severity="success" sx={{ mt: '16px' }}>{success}</Alert>}
+        {error && (
+          <Alert severity="error" sx={{ mt: 2 }}>
+            {error}
+          </Alert>
+        )}
+
 
         <Button type="submit" variant="contained" fullWidth size="large" sx={{ mt: '24px' }}>
           Register
@@ -109,7 +129,7 @@ export const Register = () => {
         <Typography variant="body2" mt="16px">
           Already have an account? <Button onClick={() => navigate('/login')}>Log in</Button>
         </Typography>
-      </Box>
+      </form>
     </Container>
   );
 };
