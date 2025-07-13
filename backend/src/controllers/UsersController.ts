@@ -29,32 +29,20 @@ export class UsersController {
     const userId = this.extractUserId(req);
     if (!userId) return res.status(401).json({ message: 'Unauthorized' });
 
-    try {
-      const user = await this.usersCollection.findOne({ _id: userId });
-      if (!user) return res.status(404).json({ message: 'User not found' });
+  async getFavoritesByUserId(req: Request, res: Response) {
+  const { userId } = req.params;
+  const tokenUserId = this.extractUserId(req);
 
-      return res.status(200).json({
-        name: user.name,
-        email: user.email,
-        language: user.preferredLanguage,
-      });
-    } catch {
-      return res.status(500).json({ message: 'Internal Server Error' });
-    }
+  if (!tokenUserId) return res.status(401).json({ message: 'Unauthorized' });
+  try {
+    const user = await this.usersCollection.findOne({ _id: userId });
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    res.status(200).json(user.favorites || []);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to get favorites', error: (err as Error).message });
   }
-
-  async getFavorites(req: Request, res: Response) {
-    const userId = this.extractUserId(req);
-    if (!userId) return res.status(401).json({ message: 'Unauthorized' });
-
-    try {
-      const user = await this.usersCollection.findOne({ _id: userId });
-      if (!user) return res.status(404).json({ message: 'User not found' });
-      res.status(200).json(user.favorites || []);
-    } catch (err) {
-      res.status(500).json({ message: 'Failed to get favorites', error: (err as Error).message });
-    }
-  }
+}
 
   async addFavorite(req: Request, res: Response) {
     const userId = this.extractUserId(req);

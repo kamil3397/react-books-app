@@ -3,9 +3,9 @@ import { Container, Grid, Skeleton, TextField, Typography, Button, Box } from '@
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
+import { BookCard } from './BooksPageComponents/BookCard';
+import { useFavoritesContext } from '../../context/FavoritesContext';
 
-import { BookCard } from '../../components/BookCard';
-import { useFavorites } from '../../hooks/useFavorites';
 
 interface Book {
   id: number;
@@ -24,34 +24,35 @@ export const BooksPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  const { favoriteIds, toggleFavorite } = useFavorites();
+  const { favoriteIds, toggleFavorite } = useFavoritesContext();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/login');
-      return;
-    }
+  const token = localStorage.getItem('token');
+  if (!token) {
+    navigate('/login');
+    return;
+  }
 
-    const fetchBooks = async () => {
-      try {
-        const decoded = jwtDecode<UserLanguage>(token);
-        const preferredLang = decoded.preferredLanguage || 'en';
+  try {
+    const decoded = jwtDecode<UserLanguage>(token);
+    const preferredLang = decoded.preferredLanguage || 'en';
 
-        setLoading(true);
+    setLoading(true);
 
-        const res = await axios.get('https://gutendex.com/books', {
-          params: { search, languages: preferredLang, page },
-        });
-
-        setBooks(res.data.results);
-        setTotalPages(Math.ceil(res.data.count / 32));
-      } catch {
-        navigate('/login');
-      } finally {
-        setLoading(false);
-      }
-    };
+    axios
+      .get('http://localhost:4000/books', {
+        params: {
+          search,
+          languages: preferredLang,
+        },
+      })
+      .then((res) => setBooks(res.data.results))
+      .catch(() => setBooks([]))
+      .finally(() => setLoading(false));
+  } catch {
+    navigate('/login');
+  }
+}, [search, navigate]);
 
     fetchBooks();
   }, [search, page, navigate]);

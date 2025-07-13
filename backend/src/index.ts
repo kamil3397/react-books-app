@@ -4,6 +4,7 @@ import cors from 'cors';
 import { MongoClient } from 'mongodb';
 import { AuthController } from './controllers/AuthController';
 import { UsersController } from './controllers/UsersController';
+import { BooksController } from './controllers/BooksController';
 
 const run = async () => {
   const app = express();
@@ -25,9 +26,15 @@ const run = async () => {
   app.post('/login', async (req, res) => await authController.login(req, res));
   app.get('/profile', async (req, res) => await usersController.getUserById(req, res));
 
-  app.get('/favorites', async(req, res) => await usersController.getFavorites(req, res));
-  app.post('/favorites/:bookId', async (req, res) => await usersController.addFavorite(req, res));
-  app.delete('/favorites/:bookId', async (req, res) => await usersController.removeFavorite(req, res));
+  app.get('/books', BooksController.getBooks);
+  app.post('/user/:userId/favorites', BooksController.getBooksByIds);
+
+  app.post('/favorites/:bookId', (req, res) => usersController.addFavorite(req, res));
+  app.delete('/favorites/:bookId', (req, res) => usersController.removeFavorite(req, res));
+
+
+
+  app.get('/user/:userId/favorites', (req, res) => usersController.getFavoritesByUserId(req, res));
 
 
   app.listen(process.env.PORT, () => {
