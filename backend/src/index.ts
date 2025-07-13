@@ -21,12 +21,13 @@ const run = async () => {
   const usersController = new UsersController(database.collection('users'));
 
 
-  app.post('/register', (req, res) => authController.register(req, res));
-  app.post('/login', (req, res) => authController.login(req, res));
+  app.post('/register', async (req, res) => await authController.register(req, res));
+  app.post('/login', async (req, res) => await authController.login(req, res));
+  app.get('/profile', async (req, res) => await usersController.getUserById(req, res));
 
-  app.get('/favorites', (req, res) => usersController.getFavorites(req, res));
-  app.post('/favorites/:bookId', (req, res) => usersController.addFavorite(req, res));
-  app.delete('/favorites/:bookId', (req, res) => usersController.removeFavorite(req, res));
+  app.get('/favorites', async(req, res) => await usersController.getFavorites(req, res));
+  app.post('/favorites/:bookId', async (req, res) => await usersController.addFavorite(req, res));
+  app.delete('/favorites/:bookId', async (req, res) => await usersController.removeFavorite(req, res));
 
 
   app.listen(process.env.PORT, () => {

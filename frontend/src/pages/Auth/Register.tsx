@@ -77,7 +77,6 @@ export const Register = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} style={{ marginTop: 16 }}>
         <TextField
-          fullWidth
           label="Name"
           margin="normal"
           {...register('name')}
@@ -85,7 +84,6 @@ export const Register = () => {
           helperText={errors.name?.message}
         />
         <TextField
-          fullWidth
           label="Email"
           type="email"
           margin="normal"
@@ -94,17 +92,16 @@ export const Register = () => {
           helperText={errors.email?.message}
         />
         <TextField
-          fullWidth
           label="Password"
           type="password"
           margin="normal"
           {...register('password')}
           error={!!errors.password}
           helperText={errors.password?.message}
+
         />
         <TextField
           select
-          fullWidth
           label="Preferred Book Language"
           margin="normal"
           {...register('preferredLanguage')}
@@ -124,13 +121,13 @@ export const Register = () => {
           </Alert>
         )}
 
-        <Button type="submit" variant="contained" size="large" fullWidth sx={{ mt: 3 }}>
+
+        <Button type="submit" variant="contained" fullWidth size="large" sx={{ mt: '24px' }}>
           Register
         </Button>
 
-        <Typography variant="body2" mt={2}>
-          Already have an account?{' '}
-          <Button onClick={() => navigate('/login')}>Log in</Button>
+        <Typography variant="body2" mt="16px">
+          Already have an account? <Button onClick={() => navigate('/login')}>Log in</Button>
         </Typography>
       </form>
     </Container>
