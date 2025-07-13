@@ -127,7 +127,7 @@ export const Register = () => {
         </Button>
 
         <Typography variant="body2" mt="16px">
-          Already have an account? <Button onClick={() => navigate('/login')}>Log in</Button>
+          Already have an account? <Button variant='text' onClick={() => navigate('/login')}>Log in</Button>
         </Typography>
       </form>
     </Container>

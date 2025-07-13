@@ -2,7 +2,7 @@ import { useEffect, useState, type FC } from 'react'
 import axios from 'axios'
 import { jwtDecode } from 'jwt-decode'
 import { Container, Grid, Typography, Alert, CircularProgress } from '@mui/material'
-import { BookCard } from './BooksPage/BooksPageComponents/BookCard'
+import { BookCard } from '../components/BookCard'
 import { useFavoritesContext } from '../context/FavoritesContext'
 
 

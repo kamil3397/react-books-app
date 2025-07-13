@@ -67,10 +67,40 @@ export const theme = createTheme({
           textTransform: 'none',
           fontSize: '1rem',
           textDecoration: 'none',
-          color: '#ffffff',
           '&.Mui-disabled': {
             color: '#9e9e9e',
           },
+        },
+        text: {
+          color: '#1976d2',
+          '&:hover': {
+            backgroundColor: 'rgba(25, 118, 210, 0.08)',
+          },
+        },
+        contained: {
+          color: '#ffffff',
+        },
+      },
+    },
+    MuiAppBar: {
+      defaultProps: {
+        color: 'primary',
+        position: 'static',
+        elevation: 3,
+      },
+      styleOverrides: {
+        root: {
+          '& .MuiButton-root': {
+            color: 'inherit',
+          },
+        },
+      },
+    },
+    MuiToolbar: {
+      styleOverrides: {
+        root: {
+          display: 'flex',
+          justifyContent: 'space-between',
         },
       },
     },
@@ -95,6 +125,15 @@ export const theme = createTheme({
         },
       },
     },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
+        },
+      },
+    },
     MuiIconButton: {
       styleOverrides: {
         root: ({ theme }) => ({
@@ -105,16 +144,6 @@ export const theme = createTheme({
           padding: 0,
           color: theme.palette.error.main,
         }),
-      },
-    },
-
-    MuiCardContent: {
-      styleOverrides: {
-        root: {
-          flexGrow: 1,
-          display: 'flex',
-          flexDirection: 'column',
-        },
       },
     },
     MuiTextField: {
@@ -132,21 +161,6 @@ export const theme = createTheme({
       styleOverrides: {
         rounded: {
           borderRadius: '8px',
-        },
-      },
-    },
-    MuiAppBar: {
-      defaultProps: {
-        color: 'primary',
-        position: 'static',
-        elevation: 3,
-      },
-    },
-    MuiToolbar: {
-      styleOverrides: {
-        root: {
-          display: 'flex',
-          justifyContent: 'space-between',
         },
       },
     },

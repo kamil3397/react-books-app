@@ -3,9 +3,8 @@ import { Container, Grid, Skeleton, TextField, Typography, Button, Box } from '@
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import { BookCard } from './BooksPageComponents/BookCard';
+import { BookCard } from '../../components/BookCard';
 import { useFavoritesContext } from '../../context/FavoritesContext';
-
 
 interface Book {
   id: number;
@@ -27,32 +26,40 @@ export const BooksPage = () => {
   const { favoriteIds, toggleFavorite } = useFavoritesContext();
 
   useEffect(() => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    navigate('/login');
-    return;
-  }
+    const fetchBooks = () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        navigate('/login');
+        return;
+      }
 
-  try {
-    const decoded = jwtDecode<UserLanguage>(token);
-    const preferredLang = decoded.preferredLanguage || 'en';
+      try {
+        const decoded = jwtDecode<UserLanguage>(token);
+        const preferredLang = decoded.preferredLanguage || 'en';
 
-    setLoading(true);
+        setLoading(true);
 
-    axios
-      .get('http://localhost:4000/books', {
-        params: {
-          search,
-          languages: preferredLang,
-        },
-      })
-      .then((res) => setBooks(res.data.results))
-      .catch(() => setBooks([]))
-      .finally(() => setLoading(false));
-  } catch {
-    navigate('/login');
-  }
-}, [search, navigate]);
+        axios
+          .get('http://localhost:4000/books', {
+            params: {
+              search,
+              page,
+              languages: preferredLang,
+            },
+          })
+          .then((res) => {
+            setBooks(res.data.results || []);
+            setTotalPages(res.data.totalPages || 1);
+          })
+          .catch(() => {
+            setBooks([]);
+            setTotalPages(1);
+          })
+          .finally(() => setLoading(false));
+      } catch {
+        navigate('/login');
+      }
+    };
 
     fetchBooks();
   }, [search, page, navigate]);
@@ -63,7 +70,7 @@ export const BooksPage = () => {
 
   return (
     <Container>
-      <Typography variant="h4">
+      <Typography variant="h4" gutterBottom>
         Browse Books
       </Typography>
 
@@ -74,28 +81,30 @@ export const BooksPage = () => {
           setSearch(e.target.value);
           setPage(1);
         }}
+        fullWidth
+        margin="normal"
       />
 
-      <Grid container>
+      <Grid container spacing={3}>
         {loading
           ? [...new Array(skeletonCount)].map((_, index) => (
-            <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
-              <Skeleton variant="rounded" height={300} />
-              <Skeleton height={30} />
-              <Skeleton width="60%" />
-            </Grid>
-          ))
+              <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
+                <Skeleton variant="rounded" height={300} />
+                <Skeleton height={30} />
+                <Skeleton width="60%" />
+              </Grid>
+            ))
           : books.map((book) => (
-            <Grid item key={book.id} xs={12} sm={6} md={4} lg={3}>
-              <BookCard
-                title={book.title}
-                authors={book.authors.map((a) => a.name).join(', ')}
-                cover={book.formats['image/jpeg']}
-                isFavorite={favoriteIds.includes(book.id.toString())}
-                onToggleFavorite={() => toggleFavorite(book.id.toString())}
-              />
-            </Grid>
-          ))}
+              <Grid item key={book.id} xs={12} sm={6} md={4} lg={3}>
+                <BookCard
+                  title={book.title}
+                  authors={book.authors.map((a) => a.name).join(', ')}
+                  cover={book.formats['image/jpeg']}
+                  isFavorite={favoriteIds.includes(book.id.toString())}
+                  onToggleFavorite={() => toggleFavorite(book.id.toString())}
+                />
+              </Grid>
+            ))}
       </Grid>
 
       {!loading && totalPages > 1 && (
@@ -126,7 +135,6 @@ export const BooksPage = () => {
             Next
           </Button>
         </Box>
-
       )}
     </Container>
   );
