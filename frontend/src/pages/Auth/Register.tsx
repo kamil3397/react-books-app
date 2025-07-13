@@ -75,7 +75,7 @@ export const Register = () => {
         Create an Account
       </Typography>
 
-      <form onSubmit={handleSubmit(onSubmit)} noValidate style={{ marginTop: 16 }}>
+      <form onSubmit={handleSubmit(onSubmit)} style={{ marginTop: 16 }}>
         <TextField
           fullWidth
           label="Name"
@@ -83,7 +83,6 @@ export const Register = () => {
           {...register('name')}
           error={!!errors.name}
           helperText={errors.name?.message}
-          required
         />
         <TextField
           fullWidth
@@ -93,7 +92,6 @@ export const Register = () => {
           {...register('email')}
           error={!!errors.email}
           helperText={errors.email?.message}
-          required
         />
         <TextField
           fullWidth
@@ -103,18 +101,15 @@ export const Register = () => {
           {...register('password')}
           error={!!errors.password}
           helperText={errors.password?.message}
-          required
         />
         <TextField
           select
           fullWidth
           label="Preferred Book Language"
           margin="normal"
-          defaultValue="en"
           {...register('preferredLanguage')}
           error={!!errors.preferredLanguage}
           helperText={errors.preferredLanguage?.message}
-          required
         >
           {languageOptions.map(({ label, value }) => (
             <MenuItem key={value} value={value}>

@@ -52,7 +52,7 @@ export const Login = () => {
         Login
       </Typography>
 
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <form onSubmit={handleSubmit(onSubmit)} >
         <TextField
           fullWidth
           label="Email"
@@ -61,7 +61,6 @@ export const Login = () => {
           {...register('email')}
           error={!!errors.email}
           helperText={errors.email?.message}
-          required
         />
 
         <TextField
@@ -72,7 +71,6 @@ export const Login = () => {
           {...register('password')}
           error={!!errors.password}
           helperText={errors.password?.message}
-          required
         />
 
         {error && (
