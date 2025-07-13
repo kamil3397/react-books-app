@@ -1,69 +1,89 @@
-import { useState, type ChangeEvent, type FormEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Box, Button, TextField, Typography, Alert } from '@mui/material'
-import axios from 'axios'
-import { useAuth } from '../../context/AuthContext'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Button, TextField, Typography, Alert, Box } from '@mui/material';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import axios, { AxiosError } from 'axios';
+import { useAuthContext } from '../../context/AuthContext';
+
+type FormData = {
+  email: string;
+  password: string;
+};
+
+const schema = yup.object().shape({
+  email: yup.string().email('Invalid email').required('Email is required'),
+  password: yup.string().required('Password is required'),
+});
 
 export const Login = () => {
-  const navigate = useNavigate()
-  const { login } = useAuth()
+  const navigate = useNavigate();
+  const { login } = useAuthContext();
+  const [error, setError] = useState('');
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
+  const {register,handleSubmit,formState: { errors }} = useForm<FormData>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault()
-    setError('')
+  const onSubmit = (data: FormData) => {
+    setError('');
 
     axios
-      .post('http://localhost:4000/login', { email, password })
+      .post('http://localhost:4000/login', data)
       .then((res) => {
-        const { accessToken } = res.data
-        login(accessToken) // użyj login() z kontekstu
-        navigate('/books')
+        const { accessToken } = res.data;
+        login(accessToken);
+        navigate('/books');
       })
-      .catch((err) => {
-        const message = err.response?.data?.message || 'Login failed'
-        setError(message)
-      })
-  }
+      .catch((err: AxiosError<{ message?: string }>) => {
+        const message = err.response?.data?.message || 'Login failed';
+        setError(message);
+      });
+  };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} maxWidth={400} mx="auto" mt={8}>
+    <Box maxWidth={400} mx="auto" mt={8}>
       <Typography variant="h5" mb={2}>
         Login
       </Typography>
 
-      <TextField
-        fullWidth
-        label="Email"
-        type="email"
-        value={email}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-        margin="normal"
-        required
-      />
+      <form onSubmit={handleSubmit(onSubmit)} >
+        <TextField
+          fullWidth
+          label="Email"
+          type="email"
+          margin="normal"
+          {...register('email')}
+          error={!!errors.email}
+          helperText={errors.email?.message}
+        />
 
-      <TextField
-        fullWidth
-        label="Password"
-        type="password"
-        value={password}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-        margin="normal"
-        required
-      />
+        <TextField
+          fullWidth
+          label="Password"
+          type="password"
+          margin="normal"
+          {...register('password')}
+          error={!!errors.password}
+          helperText={errors.password?.message}
+        />
 
-      {error && (
-        <Alert severity="error" sx={{ mt: 2 }}>
-          {error}
-        </Alert>
-      )}
+        {error && (
+          <Alert severity="error" sx={{ mt: 2 }}>
+            {error}
+          </Alert>
+        )}
 
-      <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
-        Log In
-      </Button>
+        <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
+          Log In
+        </Button>
+      </form>
+
     </Box>
-  )
-}
+  );
+};

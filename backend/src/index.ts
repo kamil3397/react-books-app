@@ -22,14 +22,16 @@ const run = async () => {
   const usersController = new UsersController(database.collection('users'));
 
 
-  app.post('/register', (req, res) => authController.register(req, res));
-  app.post('/login', (req, res) => authController.login(req, res));
+  app.post('/register', async (req, res) => await authController.register(req, res));
+  app.post('/login', async (req, res) => await authController.login(req, res));
+  app.get('/profile', async (req, res) => await usersController.getUserById(req, res));
 
   app.get('/books', BooksController.getBooks);
   app.post('/user/:userId/favorites', BooksController.getBooksByIds);
 
   app.post('/favorites/:bookId', (req, res) => usersController.addFavorite(req, res));
   app.delete('/favorites/:bookId', (req, res) => usersController.removeFavorite(req, res));
+
 
 
   app.get('/user/:userId/favorites', (req, res) => usersController.getFavoritesByUserId(req, res));

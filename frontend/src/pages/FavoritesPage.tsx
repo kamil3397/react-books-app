@@ -5,13 +5,13 @@ import { Container, Grid, Typography, Alert, CircularProgress } from '@mui/mater
 import { BookCard } from './BooksPage/BooksPageComponents/BookCard'
 import { useFavoritesContext } from '../context/FavoritesContext'
 
-interface Book {
-  id: number
-  title: string
-  authors: { name: string }[]
-  formats: { [key: string]: string }
-}
 
+interface Book {
+  id: number;
+  title: string;
+  authors: { name: string }[];
+  formats: { [key: string]: string };
+}
 
 export const FavoritesPage: FC = () => {
   const { favoriteIds, toggleFavorite } = useFavoritesContext()
@@ -50,7 +50,7 @@ export const FavoritesPage: FC = () => {
   }, [favoriteIds, token, userId])
 
   return (
-    <Container sx={{ py: 4 }}>
+    <Container>
       <Typography variant="h4" gutterBottom>
         Favorite Books
       </Typography>
@@ -87,5 +87,5 @@ export const FavoritesPage: FC = () => {
         )
       )}
     </Container>
-  )
-}
+  );
+};

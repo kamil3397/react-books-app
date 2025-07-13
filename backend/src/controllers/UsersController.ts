@@ -25,6 +25,9 @@ export class UsersController {
       return null;
     }
   }
+  async getUserById(req: Request, res: Response) {
+    const userId = this.extractUserId(req);
+    if (!userId) return res.status(401).json({ message: 'Unauthorized' });
 
   async getFavoritesByUserId(req: Request, res: Response) {
   const { userId } = req.params;
