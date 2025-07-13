@@ -1,8 +1,6 @@
 import { AppBar, Toolbar, Button, Box } from '@mui/material';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-
 import { NavLink, useNavigate } from 'react-router-dom';
-
 import { useAuth } from '../context/AuthContext';
 
 export const Navbar = () => {
@@ -20,43 +18,25 @@ export const Navbar = () => {
         <Button
           component={NavLink}
           to="/"
-          color="inherit"
-          sx={{ display: 'flex', alignItems: 'center', fontSize: '1.25rem', fontWeight: 500 }}
+          startIcon={<MenuBookIcon fontSize="large" />}
+          sx={{ display: 'flex', alignItems: 'center' }}
         >
-          <MenuBookIcon fontSize="large" />
           Bookify
         </Button>
 
         <Box>
-          <Button
-            component={NavLink}
-            to="/books"
-            color="inherit"
-            sx={{ '&.active': { fontWeight: 'bold', borderBottom: '2px solid white' } }}
-          >
+          <Button component={NavLink} to="/books">
             Books
           </Button>
-
-          <Button
-            component={NavLink}
-            to="/favorites"
-            color="inherit"
-            sx={{ '&.active': { fontWeight: 'bold', borderBottom: '2px solid white' } }}
-          >
+          <Button component={NavLink} to="/favorites">
             Favorites
           </Button>
-
           {isLoggedIn ? (
-            <Button onClick={handleLogout} color="inherit">
+            <Button onClick={handleLogout}>
               Logout
             </Button>
           ) : (
-            <Button
-              component={NavLink}
-              to="/login"
-              color="inherit"
-              sx={{ '&.active': { fontWeight: 'bold', borderBottom: '2px solid white' } }}
-            >
+            <Button component={NavLink} to="/login">
               Login
             </Button>
           )}

@@ -46,7 +46,7 @@ export const Register = () => {
       .then(() => {
         setSuccess('Account created successfully!');
         setForm({ name: '', email: '', password: '', preferredLanguage: 'en' });
-        navigate('/login')
+        navigate('/login');
       })
       .catch((error) => {
         const message = error.response?.data?.message || 'Registration failed';
@@ -55,47 +55,39 @@ export const Register = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ py: 6 }}>
-      <Typography variant="h4" gutterBottom>
+    <Container maxWidth="sm">
+      <Typography variant="h4">
         Create an Account
       </Typography>
 
-      <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 2 }}>
+      <Box component="form" onSubmit={handleSubmit} noValidate mt="16px">
         <TextField
-          fullWidth
           label="Name"
           name="name"
-          margin="normal"
           value={form.name}
           onChange={handleChange}
           required
         />
         <TextField
-          fullWidth
           label="Email"
           name="email"
           type="email"
-          margin="normal"
           value={form.email}
           onChange={handleChange}
           required
         />
         <TextField
-          fullWidth
           label="Password"
           name="password"
           type="password"
-          margin="normal"
           value={form.password}
           onChange={handleChange}
           required
         />
         <TextField
           select
-          fullWidth
           label="Preferred Book Language"
           name="preferredLanguage"
-          margin="normal"
           value={form.preferredLanguage}
           onChange={handleChange}
           required
@@ -107,24 +99,15 @@ export const Register = () => {
           ))}
         </TextField>
 
-        {error && (
-          <Alert severity="error" sx={{ mt: 2 }}>
-            {error}
-          </Alert>
-        )}
-        {success && (
-          <Alert severity="success" sx={{ mt: 2 }}>
-            {success}
-          </Alert>
-        )}
+        {error && <Alert severity="error" sx={{ mt: '16px' }}>{error}</Alert>}
+        {success && <Alert severity="success" sx={{ mt: '16px' }}>{success}</Alert>}
 
-        <Button type="submit" variant="contained" size="large" fullWidth sx={{ mt: 3 }}>
+        <Button type="submit" variant="contained" fullWidth size="large" sx={{ mt: '24px' }}>
           Register
         </Button>
 
-        <Typography variant="body2" mt={2}>
-          Already have an account?{' '}
-          <Button onClick={() => navigate('/login')}>Log in</Button>
+        <Typography variant="body2" mt="16px">
+          Already have an account? <Button onClick={() => navigate('/login')}>Log in</Button>
         </Typography>
       </Box>
     </Container>

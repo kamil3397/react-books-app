@@ -5,8 +5,24 @@ export const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <Container maxWidth={false} className="HomeWrapper">
-      <Container maxWidth="md" className="HomeContainer">
+    <Container
+      maxWidth={false}
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(to right, #f5f7fa, #c3cfe2)',
+      }}
+    >
+      <Container
+        maxWidth="md"
+        sx={{
+          textAlign: 'center',
+          paddingTop: '80px',
+          paddingBottom: '80px',
+        }}
+      >
         <Typography variant="h2" gutterBottom>
           Discover Timeless Books
         </Typography>
@@ -16,7 +32,7 @@ export const Home = () => {
         <Button
           variant="contained"
           size="large"
-          className="HomeButton"
+          sx={{ marginTop: '32px' }}
           onClick={() => navigate('/register')}
         >
           Get Started

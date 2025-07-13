@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Container, Grid, Skeleton, TextField, Typography, Button, Box } from '@mui/material';
-
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
@@ -28,44 +27,42 @@ export const BooksPage = () => {
   const { favoriteIds, toggleFavorite } = useFavorites();
 
   useEffect(() => {
-  const token = localStorage.getItem('token');
-  if (!token) {
-    navigate('/login');
-    return;
-  }
-
-  const fetchBooks = async () => {
-    try {
-      const decoded = jwtDecode<UserLanguage>(token);
-      const preferredLang = decoded.preferredLanguage || 'en';
-
-      setLoading(true);
-
-      const res = await axios.get('https://gutendex.com/books', {
-        params: { search, languages: preferredLang, page },
-      });
-
-      setBooks(res.data.results);
-      setTotalPages(Math.ceil(res.data.count / 32));
-    } catch {
+    const token = localStorage.getItem('token');
+    if (!token) {
       navigate('/login');
-    } finally {
-      setLoading(false);
+      return;
     }
-  };
 
-  fetchBooks();
-}, [search, page, navigate]);
+    const fetchBooks = async () => {
+      try {
+        const decoded = jwtDecode<UserLanguage>(token);
+        const preferredLang = decoded.preferredLanguage || 'en';
 
+        setLoading(true);
+
+        const res = await axios.get('https://gutendex.com/books', {
+          params: { search, languages: preferredLang, page },
+        });
+
+        setBooks(res.data.results);
+        setTotalPages(Math.ceil(res.data.count / 32));
+      } catch {
+        navigate('/login');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBooks();
+  }, [search, page, navigate]);
 
   const handlePrev = () => setPage((p) => Math.max(p - 1, 1));
   const handleNext = () => setPage((p) => Math.min(p + 1, totalPages));
   const skeletonCount = books.length > 0 ? books.length : 12;
 
-
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4">
         Browse Books
       </Typography>
 
@@ -101,12 +98,15 @@ export const BooksPage = () => {
       </Grid>
 
       {!loading && totalPages > 1 && (
-        <Box
-          sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, mt: 4, }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 2, mt: 4 }}>
           <Button
             disabled={page === 1}
             onClick={handlePrev}
-            sx={{ color: 'primary.main', '&.Mui-disabled': { color: 'text.disabled' } }}>
+            sx={{
+              color: page === 1 ? 'text.disabled' : 'primary.main',
+              pointerEvents: page === 1 ? 'none' : 'auto',
+            }}
+          >
             Previous
           </Button>
 
@@ -117,11 +117,14 @@ export const BooksPage = () => {
           <Button
             disabled={page === totalPages}
             onClick={handleNext}
-            sx={{ color: 'primary.main', '&.Mui-disabled': { color: 'text.disabled' } }}>
+            sx={{
+              color: page === totalPages ? 'text.disabled' : 'primary.main',
+              pointerEvents: page === totalPages ? 'none' : 'auto',
+            }}
+          >
             Next
           </Button>
         </Box>
-
 
       )}
     </Container>

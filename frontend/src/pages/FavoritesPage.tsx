@@ -34,7 +34,7 @@ export const FavoritesPage = () => {
       .finally(() => setLoading(false));
   }, [favoriteIds]);
 
-  const skeletonCount = favoriteIds.length > 0 ? favoriteIds.length : 12;
+  const skeletonCount = favoriteIds.length || 12;
 
   return (
     <Container>
@@ -44,7 +44,7 @@ export const FavoritesPage = () => {
 
       {loading ? (
         <Grid container>
-          {[...new Array(skeletonCount)].map((_, index) => (
+          {[...Array(skeletonCount)].map((_, index) => (
             <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
               <Skeleton variant="rounded" height={300} />
               <Skeleton height={30} />
@@ -53,7 +53,7 @@ export const FavoritesPage = () => {
           ))}
         </Grid>
       ) : books.length === 0 ? (
-        <Box sx={{ mt: 4 }}>
+        <Box sx={{ mt: 4, textAlign: 'center' }}>
           <Typography color="text.secondary">No favorites yet.</Typography>
         </Box>
       ) : (

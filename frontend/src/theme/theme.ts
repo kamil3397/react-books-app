@@ -35,24 +35,6 @@ export const theme = createTheme({
         root: {
           paddingTop: '32px',
           paddingBottom: '32px',
-
-          '&.HomeWrapper': {
-            minHeight: '100vh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'linear-gradient(to right, #f5f7fa, #c3cfe2)',
-          },
-
-          '&.HomeContainer': {
-            textAlign: 'center',
-            paddingTop: '80px',
-            paddingBottom: '80px',
-          },
-
-          '&.BookCardTextWrapper': {
-            flexGrow: 1,
-          },
         },
       },
     },
@@ -66,20 +48,16 @@ export const theme = createTheme({
           color: 'text.secondary',
         },
         subtitle1: {
-          '&.BookCardTitle': {
-            fontWeight: 'bold',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            minHeight: 48,
-          },
+          fontWeight: 'bold',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          minHeight: 48,
         },
         body2: {
-          '&.BookCardAuthor': {
-            marginTop: 8,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          },
+          marginTop: 8,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
         },
       },
     },
@@ -89,8 +67,9 @@ export const theme = createTheme({
           textTransform: 'none',
           fontSize: '1rem',
           textDecoration: 'none',
-          '&.HomeButton': {
-            marginTop: '32px',
+          color: '#ffffff',
+          '&.Mui-disabled': {
+            color: '#9e9e9e',
           },
         },
       },
@@ -98,65 +77,43 @@ export const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          '&.BookCard': {
-            height: 420,
-            display: 'flex',
-            flexDirection: 'column',
-            borderRadius: 16,
-            boxShadow: 2,
-            overflow: 'hidden',
-            position: 'relative',
-          },
+          height: '420px',
+          display: 'flex',
+          flexDirection: 'column',
+          borderRadius: '16px',
+          boxShadow: '0px 4px 8px rgba(0,0,0,0.1)',
+          overflow: 'hidden',
+          position: 'relative',
         },
       },
     },
     MuiCardMedia: {
       styleOverrides: {
         root: {
-          '&.BookCardImage': {
-            height: 240,
-            objectFit: 'cover',
-          },
+          height: 240,
+          objectFit: 'cover',
         },
       },
     },
     MuiIconButton: {
       styleOverrides: {
         root: ({ theme }) => ({
-          '&.BookCardFavorite': {
-            position: 'absolute',
-            top: 8,
-            right: 8,
-            zIndex: 1,
-            backgroundColor: 'light',
-            color: theme.palette.error.main,
-            width: 36,
-            height: 36,
-            borderRadius: '50%',
-            padding: 0,
-            margin: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            '&:hover': {
-              backgroundColor: 'light',
-            },
-            '& svg': {
-              fontSize: '20px',
-              margin: 0,
-            },
-          },
+          position: 'absolute',
+          top: 8,
+          right: 8,
+          zIndex: 1,
+          padding: 0,
+          color: theme.palette.error.main,
         }),
       },
     },
+
     MuiCardContent: {
       styleOverrides: {
         root: {
-          '&.BookCardContent': {
-            flexGrow: 1,
-            display: 'flex',
-            flexDirection: 'column',
-          },
+          flexGrow: 1,
+          display: 'flex',
+          flexDirection: 'column',
         },
       },
     },

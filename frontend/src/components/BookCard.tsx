@@ -12,26 +12,19 @@ interface BookCardProps {
 
 export const BookCard = ({ title, authors, cover, isFavorite, onToggleFavorite }: BookCardProps) => {
   return (
-    <Card className="BookCard">
+    <Card>
       {cover && (
-        <CardMedia
-          component="img"
-          image={cover}
-          alt={title}
-          className="BookCardImage"
-        />
+        <CardMedia component="img" image={cover} alt={title} />
       )}
 
-      <IconButton onClick={onToggleFavorite} className="BookCardFavorite">
+      <IconButton onClick={onToggleFavorite}>
         {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
       </IconButton>
 
-      <CardContent className="BookCardContent">
-        <Container disableGutters className="BookCardTextWrapper">
-          <Typography variant="subtitle1" className="BookCardTitle">
-            {title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" className="BookCardAuthor">
+      <CardContent>
+        <Container disableGutters>
+          <Typography variant="subtitle1">{title}</Typography>
+          <Typography variant="body2" color="text.secondary">
             {authors}
           </Typography>
         </Container>
