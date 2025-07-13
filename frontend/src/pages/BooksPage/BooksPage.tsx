@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { BookCard } from './BooksPageComponents/BookCard';
-import { useFavorites } from '../../hooks/useFavorites';
+import { useFavoritesContext } from '../../context/FavoritesContext';
 
 interface Book {
   id: number;
@@ -22,7 +22,7 @@ export const BooksPage = () => {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { favoriteIds, toggleFavorite } = useFavorites();
+  const { favoriteIds, toggleFavorite } = useFavoritesContext();
 
   useEffect(() => {
   const token = localStorage.getItem('token');

@@ -1,8 +1,9 @@
-import React, { useEffect, useState, type FC } from 'react'
+import { useEffect, useState, type FC } from 'react'
 import axios from 'axios'
+import { jwtDecode } from 'jwt-decode'
 import { Container, Grid, Typography, Alert, CircularProgress } from '@mui/material'
-import { useFavorites } from '../hooks/useFavorites'
 import { BookCard } from './BooksPage/BooksPageComponents/BookCard'
+import { useFavoritesContext } from '../context/FavoritesContext'
 
 interface Book {
   id: number
@@ -11,33 +12,42 @@ interface Book {
   formats: { [key: string]: string }
 }
 
+
 export const FavoritesPage: FC = () => {
-  const { favoriteIds, toggleFavorite } = useFavorites()
+  const { favoriteIds, toggleFavorite } = useFavoritesContext()
   const [books, setBooks] = useState<Book[]>([])
   const [failedIds, setFailedIds] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
 
- useEffect(() => {
-  const fetchBooks = async () => {
-    try {
-      setLoading(true)
-      const res = await axios.post<{ books: Book[], failed: string[] }>(
-        'http://localhost:4000/books/favoriteIds',
-        { ids: favoriteIds }
-      )
-      setBooks(res.data.books || [])
-      setFailedIds(res.data.failed || [])
-    } catch {
-      setBooks([])
-      setFailedIds(favoriteIds)
-    } finally {
-      setLoading(false)
+  const token = localStorage.getItem('token')
+  const userId = token ? jwtDecode<{ userId: string }>(token).userId : null
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        setLoading(true)
+        const res = await axios.post<{ books: Book[], failed: string[] }>(
+          `http://localhost:4000/user/${userId}/favorites`,
+          { ids: favoriteIds },
+          { headers: { Authorization: token } }
+        )
+
+        setBooks(res.data.books || [])
+        setFailedIds(res.data.failed || [])
+      } catch {
+        setBooks([])
+        setFailedIds(favoriteIds)
+      } finally {
+        setLoading(false)
+      }
     }
-  }
 
-  fetchBooks()
-}, [favoriteIds])
-
+    if (userId && favoriteIds.length > 0) {
+      fetchBooks()
+    } else {
+      setBooks([])
+    }
+  }, [favoriteIds, token, userId])
 
   return (
     <Container sx={{ py: 4 }}>

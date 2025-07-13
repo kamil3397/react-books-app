@@ -26,11 +26,13 @@ const run = async () => {
   app.post('/login', (req, res) => authController.login(req, res));
 
   app.get('/books', BooksController.getBooks);
-  app.post('/books/favoriteIds', BooksController.getBooksByIds);
+  app.post('/user/:userId/favorites', BooksController.getBooksByIds);
 
-  app.get('/favorites', (req, res) => usersController.getFavorites(req, res));
   app.post('/favorites/:bookId', (req, res) => usersController.addFavorite(req, res));
   app.delete('/favorites/:bookId', (req, res) => usersController.removeFavorite(req, res));
+
+
+  app.get('/user/:userId/favorites', (req, res) => usersController.getFavoritesByUserId(req, res));
 
 
   app.listen(process.env.PORT, () => {
