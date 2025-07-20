@@ -5,6 +5,7 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { BookCard } from '../../components/BookCard';
 import { useFavoritesContext } from '../../context/FavoritesContext';
+import { useTranslation } from 'react-i18next';
 
 interface Book {
   id: number;
@@ -24,6 +25,7 @@ export const BooksPage = () => {
   const [loading, setLoading] = useState(false);
 
   const { favoriteIds, toggleFavorite } = useFavoritesContext();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchBooks = () => {
@@ -71,11 +73,11 @@ export const BooksPage = () => {
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
-        Browse Books
+        {t('booksPage.title')}
       </Typography>
 
       <TextField
-        label="Search books"
+        label={t('booksPage.searchPlaceholder')}
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);
@@ -117,11 +119,11 @@ export const BooksPage = () => {
               pointerEvents: page === 1 ? 'none' : 'auto',
             }}
           >
-            Previous
+            {t('booksPage.previous')}
           </Button>
 
           <Typography color="text.primary">
-            Page {page} of {totalPages}
+            {t('booksPage.page')} {page} {t('booksPage.of')} {totalPages}
           </Typography>
 
           <Button
@@ -132,7 +134,7 @@ export const BooksPage = () => {
               pointerEvents: page === totalPages ? 'none' : 'auto',
             }}
           >
-            Next
+            {t('booksPage.next')}
           </Button>
         </Box>
       )}

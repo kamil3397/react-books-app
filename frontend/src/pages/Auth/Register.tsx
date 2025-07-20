@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axios, { AxiosError } from 'axios';
+import { useTranslation } from 'react-i18next';
 
 const languageOptions = [
   { label: 'English', value: 'en' },
@@ -19,7 +20,7 @@ const languageOptions = [
   { label: 'Suomi', value: 'fi' },
   { label: 'Ελληνικά', value: 'el' },
   { label: '中文', value: 'zh' },
-  { label: 'العربية', value: 'ar' },
+  { label: 'العربية', value: 'ar' }
 ];
 
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
@@ -44,65 +45,75 @@ type FormData = {
 
 export const Register = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [error, setError] = useState('');
 
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormData>({
     resolver: yupResolver(schema),
     defaultValues: {
       name: '',
       email: '',
       password: '',
-      preferredLanguage: 'en',
-    },
+      preferredLanguage: 'en'
+    }
   });
 
   const onSubmit = async (data: FormData) => {
-  setError('');
-
-  try {
-    await axios.post('http://localhost:4000/register', data);
-    navigate('/login');
-  } catch (err) {
-    const axiosError = err as AxiosError<{ message?: string }>;
-    const message = axiosError.response?.data?.message || 'Registration failed';
-    setError(message);
-  }
-};
+    setError('');
+    try {
+      await axios.post('http://localhost:4000/register', data);
+      navigate('/login');
+    } catch (err) {
+      const axiosError = err as AxiosError<{ message?: string }>;
+      const message = axiosError.response?.data?.message || t('registerPage.failed');
+      setError(message);
+    }
+  };
 
   return (
     <Container maxWidth="sm" sx={{ py: 6 }}>
-      <Typography variant="h4">
-        Create an Account
+      <Typography variant="h4" gutterBottom>
+        {t('registerPage.title')}
       </Typography>
 
       <form onSubmit={handleSubmit(onSubmit)} style={{ marginTop: 16 }}>
         <TextField
-          label="Name"
+          fullWidth
+          label={t('registerPage.name')}
           margin="normal"
           {...register('name')}
           error={!!errors.name}
           helperText={errors.name?.message}
         />
+
         <TextField
-          label="Email"
+          fullWidth
+          label={t('registerPage.email')}
           type="email"
           margin="normal"
           {...register('email')}
           error={!!errors.email}
           helperText={errors.email?.message}
         />
+
         <TextField
-          label="Password"
+          fullWidth
+          label={t('registerPage.password')}
           type="password"
           margin="normal"
           {...register('password')}
           error={!!errors.password}
           helperText={errors.password?.message}
-
         />
+
         <TextField
           select
-          label="Preferred Book Language"
+          fullWidth
+          label={t('registerPage.language')}
           margin="normal"
           {...register('preferredLanguage')}
           error={!!errors.preferredLanguage}
@@ -121,13 +132,15 @@ export const Register = () => {
           </Alert>
         )}
 
-
         <Button type="submit" variant="contained" fullWidth size="large" sx={{ mt: '24px' }}>
-          Register
+          {t('registerPage.submit')}
         </Button>
 
         <Typography variant="body2" mt="16px">
-          Already have an account? <Button variant='text' onClick={() => navigate('/login')}>Log in</Button>
+          {t('registerPage.alreadyAccount')}{' '}
+          <Button variant="text" onClick={() => navigate('/login')}>
+            {t('registerPage.loginLink')}
+          </Button>
         </Typography>
       </form>
     </Container>
