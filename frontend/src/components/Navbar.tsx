@@ -3,11 +3,12 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuthContext } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import { Translation } from './i18n/Translation';
 
 export const Navbar = () => {
   const navigate = useNavigate();
   const { isLoggedIn, logout } = useAuthContext();
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
 
   const handleLogout = () => {
     logout();
@@ -40,18 +41,23 @@ export const Navbar = () => {
             Bookify
           </Button>
 
-          <Typography
-            variant="body2"
-            sx={{
-              color: 'white',
-              whiteSpace: 'nowrap',
-              fontSize: '0.875rem',
-              mr: 0.5,
-              minWidth: 90,
-            }}
-          >
-            {t('navbar.languageToggleLabel')}
-          </Typography>
+          <Translation i18nKey="navbar.languageToggleLabel">
+            {(text) => (
+              <Typography
+                variant="body2"
+                sx={{
+                  color: 'white',
+                  whiteSpace: 'nowrap',
+                  fontSize: '0.875rem',
+                  mr: 0.5,
+                  minWidth: 90,
+                }}
+              >
+                {text}
+              </Typography>
+            )}
+          </Translation>
+
           <Button
             onClick={toggleLanguage}
             sx={{
@@ -66,26 +72,50 @@ export const Navbar = () => {
           </Button>
         </Box>
 
-        <Box sx={{ ml: 'auto' }}>
-          <Button component={NavLink} to="/books">Books</Button>
-          <Button component={NavLink} to="/favorites">Favorites</Button>
+        <Box>
+          <Translation i18nKey="navbar.books">
+            {(text) => (
+              <Button
+                component={NavLink}
+                to="/books"
+                sx={{
+                  color: 'inherit',
+                  textDecoration: 'none',
+                  marginRight: '1rem',
+                  '&.active': {
+                    fontWeight: 'bold',
+                    borderBottom: '2px solid white',
+                  },
+                }}
+              >
+                {text}
+              </Button>
+            )}
+          </Translation>
+
+          <Translation i18nKey="navbar.favorites">
+            {(text) => (
+              <Button
+                component={NavLink}
+                to="/favorites"
+                sx={{
+                  color: 'inherit',
+                  textDecoration: 'none',
+                  marginRight: '1rem',
+                  '&.active': {
+                    fontWeight: 'bold',
+                    borderBottom: '2px solid white',
+                  },
+                }}
+              >
+                {text}
+              </Button>
+            )}
+          </Translation>
+
           <Button
             component={NavLink}
             to="/profile"
-            sx={{
-              textDecoration: 'none',
-              marginRight: '1rem',
-              '&.active': {
-                fontWeight: 'bold',
-                borderBottom: '2px solid white',
-              },
-            }}
-          >
-            {t('navbar.books')}
-          </Button>
-          <Button
-            component={NavLink}
-            to="/favorites"
             sx={{
               color: 'inherit',
               textDecoration: 'none',
@@ -96,28 +126,37 @@ export const Navbar = () => {
               },
             }}
           >
-            {t('navbar.favorites')}
+            Profile
           </Button>
+
           {isLoggedIn ? (
-            <Button onClick={handleLogout} sx={{ color: 'white' }}>
-              {t('navbar.logout')}
-            </Button>
+            <Translation i18nKey="navbar.logout">
+              {(text) => (
+                <Button onClick={handleLogout} sx={{ color: 'white' }}>
+                  {text}
+                </Button>
+              )}
+            </Translation>
           ) : (
-            <Button
-              component={NavLink}
-              to="/login"
-              sx={{
-                color: 'inherit',
-                textDecoration: 'none',
-                marginRight: '1rem',
-                '&.active': {
-                  fontWeight: 'bold',
-                  borderBottom: '2px solid white',
-                },
-              }}
-            >
-              {t('navbar.login')}
-            </Button>
+            <Translation i18nKey="navbar.login">
+              {(text) => (
+                <Button
+                  component={NavLink}
+                  to="/login"
+                  sx={{
+                    color: 'inherit',
+                    textDecoration: 'none',
+                    marginRight: '1rem',
+                    '&.active': {
+                      fontWeight: 'bold',
+                      borderBottom: '2px solid white',
+                    },
+                  }}
+                >
+                  {text}
+                </Button>
+              )}
+            </Translation>
           )}
         </Box>
       </Toolbar>

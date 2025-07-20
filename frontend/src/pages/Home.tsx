@@ -1,10 +1,9 @@
 import { Button, Container, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { Translation } from '../components/i18n/Translation';
 
 export const Home = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
   return (
     <Container
@@ -18,20 +17,34 @@ export const Home = () => {
       }}
     >
       <Container maxWidth="md" sx={{ textAlign: 'center', py: 10 }}>
-        <Typography variant="h2" fontWeight="bold" gutterBottom>
-          {t('home.title')}
-        </Typography>
-        <Typography variant="h6" color="text.secondary" paragraph>
-          {t('home.description')}
-        </Typography>
-        <Button
-          variant="contained"
-          size="large"
-          sx={{ marginTop: '32px' }}
-          onClick={() => navigate('/register')}
-        >
-          {t('home.cta')}
-        </Button>
+        <Translation i18nKey="home.title">
+          {(text) => (
+            <Typography variant="h2" fontWeight="bold" gutterBottom>
+              {text}
+            </Typography>
+          )}
+        </Translation>
+
+        <Translation i18nKey="home.description">
+          {(text) => (
+            <Typography variant="h6" color="text.secondary" paragraph>
+              {text}
+            </Typography>
+          )}
+        </Translation>
+
+        <Translation i18nKey="home.cta">
+          {(text) => (
+            <Button
+              variant="contained"
+              size="large"
+              onClick={() => navigate('/register')}
+              sx={{ mt: 4 }}
+            >
+              {text}
+            </Button>
+          )}
+        </Translation>
       </Container>
     </Container>
   );
