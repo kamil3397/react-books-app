@@ -17,7 +17,7 @@ export const ProfilePage = () => {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get<UserProfile>('http://localhost:4000/profile', {
+        const res = await axios.get<UserProfile>('http://localhost:4000/user', {
           headers: { Authorization: token },
         });
         setProfile(res.data);

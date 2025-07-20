@@ -15,7 +15,7 @@ export class BooksController {
       const response = await axios.get('https://gutendex.com/books', {
         params: { search, languages },
       });
-      res.json(response.data);
+      res.status(200).json(response.data);
     } catch (err) {
       res.status(500).json({ message: 'Failed to fetch books.' });
     }
@@ -26,7 +26,7 @@ export class BooksController {
 
       const results = await Promise.allSettled(
         ids.map((id) =>
-          axios.get<Book>(`https://gutendex.com/books/${id}`)
+           axios.get<Book>(`https://gutendex.com/books/${id}`)
         )
       );
 
