@@ -15,10 +15,14 @@ export const Navbar = () => {
     navigate('/login');
   };
 
+  const availableLanguages = ['en', 'pl'];
+
   const toggleLanguage = () => {
-    const nextLang = i18n.language === 'en' ? 'pl' : 'en';
-    i18n.changeLanguage(nextLang);
+    const currentIndex = availableLanguages.indexOf(i18n.language);
+    const nextIndex = (currentIndex + 1) % availableLanguages.length;
+    i18n.changeLanguage(availableLanguages[nextIndex]);
   };
+
 
   return (
     <AppBar position="static" color="primary" elevation={3}>

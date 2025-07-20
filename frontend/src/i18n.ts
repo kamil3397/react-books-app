@@ -12,6 +12,7 @@ i18n.use(LanguageDetector).use(initReactI18next)
       pl: { translation: pl },
     },
     fallbackLng: 'en',
+    supportedLngs: ['en', 'pl'],
     interpolation: {
       escapeValue: false,
     },
