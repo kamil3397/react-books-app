@@ -24,8 +24,8 @@ const run = async () => {
 
   app.post('/register', async (req, res) => await authController.register(req, res));
   app.post('/login', async (req, res) => await authController.login(req, res));
-  app.get('/profile', async (req, res) => await usersController.getUserById(req, res));
-
+  app.get('/user', async (req, res) => await usersController.getUserById(req, res));
+  
   app.get('/books', BooksController.getBooks);
   app.post('/user/:userId/favorites', BooksController.getBooksByIds);
 

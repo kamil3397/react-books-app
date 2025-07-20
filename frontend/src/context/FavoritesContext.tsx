@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import axios from 'axios'
-import { jwtDecode } from 'jwt-decode'
 
 interface FavoritesContextType {
   favoriteIds: string[]
@@ -17,19 +16,22 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState<string | null>(null)
 
   const token = localStorage.getItem('token')
-  const userId = token ? (jwtDecode(token) as { userId: string }).userId : ''
 
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
-        const res = await axios.get<string[]>(
+        const userRes = await axios.get<{ userId: string }>('http://localhost:4000/user', {
+          headers: { Authorization: token },
+        })
+
+        const userId = userRes.data.userId
+
+        const favRes = await axios.get<string[]>(
           `http://localhost:4000/user/${userId}/favorites`,
-          {
-            headers: { Authorization: token },
-          }
+          { headers: { Authorization: token } }
         )
-        setFavoriteIds(res.data)
-        setError(null)
+
+        setFavoriteIds(favRes.data)
       } catch {
         setFavoriteIds([])
         setError('Failed to load favorite books')
@@ -38,9 +40,8 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
       }
     }
 
-    if (token && userId) fetchFavorites()
-    else setLoading(false)
-  }, [token, userId])
+    fetchFavorites()
+  }, [token])
 
   const toggleFavorite = async (bookId: string) => {
     const isAlreadyFavorite = favoriteIds.includes(bookId)

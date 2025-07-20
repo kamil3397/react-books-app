@@ -14,7 +14,7 @@ export const theme = createTheme({
     },
     text: {
       primary: '#1a1a1a',
-      secondary: '#555',
+      secondary: '#555555',
       disabled: '#9e9e9e',
     },
   },
@@ -44,17 +44,17 @@ export const theme = createTheme({
           fontWeight: 'bold',
           marginBottom: '16px',
         },
-        h6: {
-          color: 'text.secondary',
-        },
+        h6: ({ theme }) => ({
+          color: theme.palette.text.secondary,
+        }),
         subtitle1: {
           fontWeight: 'bold',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          minHeight: 48,
+          minHeight: '48px',
         },
         body2: {
-          marginTop: 8,
+          marginTop: '8px',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
@@ -63,23 +63,23 @@ export const theme = createTheme({
     },
     MuiButton: {
       styleOverrides: {
-        root: {
+        root: ({ theme }) => ({
           textTransform: 'none',
           fontSize: '1rem',
           textDecoration: 'none',
           '&.Mui-disabled': {
-            color: '#9e9e9e',
+            color: theme.palette.text.disabled,
           },
-        },
-        text: {
-          color: '#1976d2',
+        }),
+        text: ({ theme }) => ({
+          color: theme.palette.primary.main,
           '&:hover': {
             backgroundColor: 'rgba(25, 118, 210, 0.08)',
           },
-        },
-        contained: {
-          color: '#ffffff',
-        },
+        }),
+        contained: ({ theme }) => ({
+          color: theme.palette.primary.light,
+        }),
       },
     },
     MuiAppBar: {
@@ -120,7 +120,7 @@ export const theme = createTheme({
     MuiCardMedia: {
       styleOverrides: {
         root: {
-          height: 240,
+          height: '240px',
           objectFit: 'cover',
         },
       },
@@ -137,11 +137,6 @@ export const theme = createTheme({
     MuiIconButton: {
       styleOverrides: {
         root: ({ theme }) => ({
-          position: 'absolute',
-          top: 8,
-          right: 8,
-          zIndex: 1,
-          padding: 0,
           color: theme.palette.error.main,
         }),
       },
@@ -167,7 +162,7 @@ export const theme = createTheme({
     MuiSvgIcon: {
       styleOverrides: {
         root: {
-          marginRight: '0.5rem',
+          marginRight: '8px',
         },
       },
     },
