@@ -48,19 +48,22 @@ export const Register = () => {
   const { t } = useTranslation();
   const [error, setError] = useState('');
 
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<FormData>({
     resolver: yupResolver(schema),
     defaultValues: {
       name: '',
       email: '',
       password: '',
-      preferredLanguage: 'en',
-    },
+      preferredLanguage: 'en'
+    }
   });
 
   const onSubmit = async (data: FormData) => {
     setError('');
-
     try {
       await axios.post('http://localhost:4000/register', data);
       navigate('/login');
