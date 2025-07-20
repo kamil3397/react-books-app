@@ -1,8 +1,10 @@
 import { Button, Container, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export const Home = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <Container
@@ -24,10 +26,10 @@ export const Home = () => {
         }}
       >
         <Typography variant="h2" gutterBottom>
-          Discover Timeless Books
+          {t('home.title')}
         </Typography>
         <Typography variant="h6" paragraph>
-          Explore classics from the Gutendex Library. Sign up to save your favorites and rediscover forgotten gems.
+          {t('home.description')}
         </Typography>
         <Button
           variant="contained"
@@ -35,7 +37,7 @@ export const Home = () => {
           sx={{ marginTop: '32px' }}
           onClick={() => navigate('/register')}
         >
-          Get Started
+          {t('home.cta')}
         </Button>
       </Container>
     </Container>

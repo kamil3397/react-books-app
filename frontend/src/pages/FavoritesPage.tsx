@@ -4,7 +4,7 @@ import { jwtDecode } from 'jwt-decode'
 import { Container, Grid, Typography, Alert, CircularProgress } from '@mui/material'
 import { BookCard } from '../components/BookCard'
 import { useFavoritesContext } from '../context/FavoritesContext'
-
+import { useTranslation } from 'react-i18next'
 
 interface Book {
   id: number;
@@ -21,6 +21,7 @@ export const FavoritesPage: FC = () => {
 
   const token = localStorage.getItem('token')
   const userId = token ? jwtDecode<{ userId: string }>(token).userId : null
+  const { t } = useTranslation()
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -52,14 +53,31 @@ export const FavoritesPage: FC = () => {
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
-        Favorite Books
+        {t('favoritesPage.title')}
       </Typography>
 
-      {loading && (
+      {loading ? (
         <Grid container justifyContent="center" sx={{ my: 2 }}>
           <CircularProgress />
         </Grid>
+      ) : books.length === 0 ? (
+        <Typography>{t('favoritesPage.empty')}</Typography>
+      ) : (
+        <Grid container spacing={3}>
+          {books.map((book) => (
+            <Grid item key={book.id} xs={12} sm={6} md={4} lg={3}>
+              <BookCard
+                title={book.title}
+                authors={book.authors.map((a) => a.name).join(', ')}
+                cover={book.formats['image/jpeg']}
+                isFavorite={favoriteIds.includes(book.id.toString())}
+                onToggleFavorite={() => toggleFavorite(book.id.toString())}
+              />
+            </Grid>
+          ))}
+        </Grid>
       )}
+
 
       {!loading && !!failedIds.length && (
         <Alert severity="warning" sx={{ mb: 2 }}>

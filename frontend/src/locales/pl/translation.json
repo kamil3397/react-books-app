@@ -1,0 +1,41 @@
+{
+  "navbar": {
+    "books": "Książki",
+    "favorites": "Ulubione",
+    "login": "Zaloguj",
+    "logout": "Wyloguj",
+    "languageToggleLabel": "Zmień język na:"
+  },
+  "home": {
+    "title": "Odkryj ponadczasowe książki",
+    "description": "Przeglądaj klasyki z biblioteki Gutendex. Zarejestruj się, aby zapisywać ulubione i odkrywać zapomniane perełki.",
+    "cta": "Zacznij teraz"
+  },
+  "booksPage": {
+    "title": "Przeglądaj książki",
+    "searchPlaceholder": "Wyszukaj książki"
+  },
+  "favoritesPage": {
+    "title": "Ulubione książki",
+    "empty": "Brak ulubionych książek."
+  },
+  "loginPage": {
+    "title": "Logowanie",
+    "email": "E-mail",
+    "password": "Hasło",
+    "button": "Zaloguj się",
+    "loginFailed": "Logowanie nie powiodło się"
+  },
+  "registerPage": {
+    "title": "Utwórz konto",
+    "name": "Imię i nazwisko",
+    "email": "E-mail",
+    "password": "Hasło",
+    "language": "Preferowany język książek",
+    "submit": "Zarejestruj",
+    "alreadyAccount": "Masz już konto?",
+    "loginLink": "Zaloguj się",
+    "success": "Konto zostało utworzone pomyślnie!",
+    "failed": "Rejestracja nie powiodła się"
+  }
+}

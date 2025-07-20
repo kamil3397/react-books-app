@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axios, { AxiosError } from 'axios';
 import { useAuthContext } from '../../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 type FormData = {
   email: string;
@@ -13,16 +14,24 @@ type FormData = {
 };
 
 const schema = yup.object().shape({
-  email: yup.string().email('Invalid email').required('Email is required'),
+  email: yup
+    .string()
+    .email('Invalid email')
+    .required('Email is required'),
   password: yup.string().required('Password is required'),
 });
 
 export const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuthContext();
+  const { t } = useTranslation();
   const [error, setError] = useState('');
 
-  const {register,handleSubmit,formState: { errors }} = useForm<FormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
     resolver: yupResolver(schema),
     defaultValues: {
       email: '',
@@ -41,7 +50,7 @@ export const Login = () => {
         navigate('/books');
       })
       .catch((err: AxiosError<{ message?: string }>) => {
-        const message = err.response?.data?.message || 'Login failed';
+        const message = err.response?.data?.message || t('loginPage.loginFailed');
         setError(message);
       });
   };
@@ -49,13 +58,13 @@ export const Login = () => {
   return (
     <Box maxWidth={400} mx="auto" mt={8}>
       <Typography variant="h5" mb={2}>
-        Login
+        {t('loginPage.title')}
       </Typography>
 
-      <form onSubmit={handleSubmit(onSubmit)} >
+      <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
           fullWidth
-          label="Email"
+          label={t('loginPage.email')}
           type="email"
           margin="normal"
           {...register('email')}
@@ -65,7 +74,7 @@ export const Login = () => {
 
         <TextField
           fullWidth
-          label="Password"
+          label={t('loginPage.password')}
           type="password"
           margin="normal"
           {...register('password')}
@@ -80,10 +89,9 @@ export const Login = () => {
         )}
 
         <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
-          Log In
+          {t('loginPage.button')}
         </Button>
       </form>
-
     </Box>
   );
 };
