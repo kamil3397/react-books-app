@@ -1,7 +1,7 @@
 import { AppBar, Toolbar, Button, Box } from '@mui/material';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../context/AuthContext';
+import { useAuthContext } from '../../context/AuthContext';
 
 export const Navbar = () => {
   const navigate = useNavigate();
