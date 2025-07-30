@@ -1,50 +1,55 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button, TextField, Typography, Alert, Box } from '@mui/material';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import axios, { AxiosError } from 'axios';
-import { useAuthContext } from '../../context/AuthContext';
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Button, TextField, Typography, Alert, Box, Divider } from '@mui/material'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import axios, { AxiosError } from 'axios'
+import { useAuthContext } from '../../context/AuthContext'
+import GoogleIcon from '@mui/icons-material/Google'
 
 type FormData = {
-  email: string;
-  password: string;
-};
+  email: string
+  password: string
+}
 
 const schema = yup.object().shape({
   email: yup.string().email('Invalid email').required('Email is required'),
   password: yup.string().required('Password is required'),
-});
+})
 
 export const Login = () => {
-  const navigate = useNavigate();
-  const { login } = useAuthContext();
-  const [error, setError] = useState('');
+  const navigate = useNavigate()
+  const { login } = useAuthContext()
+  const [error, setError] = useState('')
 
-  const {register,handleSubmit,formState: { errors }} = useForm<FormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
     resolver: yupResolver(schema),
     defaultValues: {
       email: '',
       password: '',
     },
-  });
+  })
 
   const onSubmit = (data: FormData) => {
-    setError('');
+    setError('')
 
     axios
       .post('http://localhost:4000/login', data)
       .then((res) => {
-        const { accessToken } = res.data;
-        login(accessToken);
-        navigate('/books');
+        const { accessToken } = res.data
+        login(accessToken)
+        navigate('/books')
       })
       .catch((err: AxiosError<{ message?: string }>) => {
-        const message = err.response?.data?.message || 'Login failed';
-        setError(message);
-      });
-  };
+        const message = err.response?.data?.message || 'Login failed'
+        setError(message)
+      })
+  }
 
   return (
     <Box maxWidth={400} mx="auto" mt={8}>
@@ -52,7 +57,7 @@ export const Login = () => {
         Login
       </Typography>
 
-      <form onSubmit={handleSubmit(onSubmit)} >
+      <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
           fullWidth
           label="Email"
@@ -84,6 +89,30 @@ export const Login = () => {
         </Button>
       </form>
 
+      <Divider sx={{ my: 3 }}>or</Divider>
+
+      <Button
+  fullWidth
+  variant="outlined"
+  startIcon={<GoogleIcon />}
+  onClick={() => {
+    window.location.href = 'http://localhost:4000/auth/google'
+  }}
+  sx={{
+    textTransform: 'none',
+    fontWeight: 500,
+    fontSize: '16px',
+    borderColor: '#d3d3d3',
+    color: '#444',
+    backgroundColor: '#fff',
+    '&:hover': {
+      backgroundColor: '#f5f5f5',
+    },
+  }}
+>
+  Sign in with Google
+</Button>
+
     </Box>
-  );
-};
+  )
+}

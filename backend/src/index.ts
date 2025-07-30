@@ -5,6 +5,7 @@ import { MongoClient } from 'mongodb';
 import { AuthController } from './controllers/AuthController';
 import { UsersController } from './controllers/UsersController';
 import { BooksController } from './controllers/BooksController';
+import { GoogleController } from './controllers/GoogleController';
 
 const run = async () => {
   const app = express();
@@ -20,6 +21,12 @@ const run = async () => {
 
   const authController = new AuthController(database.collection('users'));
   const usersController = new UsersController(database.collection('users'));
+  const googleController = new GoogleController(database.collection('users'))
+
+  app.get('/auth/google', (req, res) => googleController.loginWithGoogle(req, res))
+  app.get('/auth/google/redirect', (req, res) => googleController.handleGoogleRedirect(req, res))
+
+
 
 
   app.post('/register', async (req, res) => await authController.register(req, res));
