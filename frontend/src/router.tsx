@@ -6,6 +6,7 @@ import { Login } from './pages/Auth/Login'
 import { BooksPage } from './pages/BooksPage/BooksPage'
 import { FavoritesPage } from './pages/FavoritesPage'
 import { ProfilePage } from './pages/ProfilePage'
+import { OAuthSuccess } from './components/OAuthSuccess'
 
 export const router = createBrowserRouter([
   {
@@ -17,7 +18,9 @@ export const router = createBrowserRouter([
       { path: 'login', element: <Login /> },
       { path: 'books', element: <BooksPage /> },
       { path: 'favorites', element: <FavoritesPage /> },
-      {path: 'profile', element: <ProfilePage/>}
+      { path: 'profile', element: <ProfilePage /> },
+      { path: 'oauth-success', element: <OAuthSuccess /> },
     ],
   },
 ])
+
